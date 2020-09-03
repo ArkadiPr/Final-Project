@@ -17,6 +17,16 @@ create table furniture
 insert into furniture(title, price) VALUES
 ('Sofa', 1000);
 
+create table products (
+                          id bigserial primary key,
+                          title varchar(255),
+                          price int ,
+                          amount int);
+
+insert into products (title, price, amount)
+values ('potato', 15, 200),
+       ('tomato', 30, 240);
+
 
 
 
