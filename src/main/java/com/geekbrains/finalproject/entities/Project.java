@@ -16,6 +16,9 @@ public class Project {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "project_name")
+    private String projectName;
+
     @OneToMany(mappedBy = "project")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks;
