@@ -74,7 +74,6 @@ public class AuthController {
                     .body("Error: Username is already taken!");
         }
 
-        // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()));
 
@@ -94,8 +93,8 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName("ROLE_MODERATOR")
+                    case "manager":
+                        Role modRole = roleRepository.findByName("ROLE_MANAGER")
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
 

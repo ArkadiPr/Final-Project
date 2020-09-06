@@ -10,7 +10,7 @@ name varchar(255) not null
 );
 
 INSERT INTO roles(name) VALUES('ROLE_USER');
-INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_MANAGER');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 
 create table users_roles(user_id bigint references users(id), role_id bigint references roles(id));
