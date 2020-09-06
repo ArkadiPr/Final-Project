@@ -1,0 +1,33 @@
+package com.geekbrains.finalproject.services;
+
+import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.Task;
+import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
+import com.geekbrains.finalproject.repositories.ProjectRepository;
+import com.geekbrains.finalproject.repositories.TaskRepository;
+
+import java.util.List;
+
+public class ProjectService {
+    private ProjectRepository projectRepository;
+
+    public Project findById(Long id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Project with id: " + id + " not found"));
+    }
+
+    public void deleteById(Long id) {
+        projectRepository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return projectRepository.existsById(id);
+    }
+
+    public Project saveOrUpdate(Project project) {
+        return projectRepository.save(project);
+    }
+
+    public List<Project> findAll() {
+        return projectRepository.findAll();
+    }
+}
