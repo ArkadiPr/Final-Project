@@ -1,13 +1,15 @@
 package com.geekbrains.finalproject.services;
 
 import com.geekbrains.finalproject.entities.Project;
-import com.geekbrains.finalproject.entities.Task;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.repositories.ProjectRepository;
-import com.geekbrains.finalproject.repositories.TaskRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@AllArgsConstructor
 public class ProjectService {
     private ProjectRepository projectRepository;
 

@@ -1,12 +1,14 @@
 package com.geekbrains.finalproject.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
+@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "users")
@@ -22,6 +24,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     @ManyToMany
     @JoinTable(name = "users_roles",

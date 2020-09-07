@@ -1,9 +1,11 @@
 package com.geekbrains.finalproject.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Entity
 @Data
 @Table(name = "roles")
