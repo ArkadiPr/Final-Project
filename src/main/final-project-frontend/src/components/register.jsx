@@ -1,105 +1,95 @@
-import Form from 'react-validation/build/form';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import React, { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
+
+import React, {useState} from 'react';
 import authController from '../api/authController';
 import history from "../history";
+import { Formik, Form, Field } from 'formik';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const Register = (props) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [repeatPassword, setRepeat] = useState('');
     const [message, setMessage] = useState('');
 
-    const required = value => {
-        if (!value) {
-          return (
-            <div className="alert alert-danger" role="alert">
-              This field is required!
-            </div>
-          );
-        }
-    };
-
-    const checkUser = value => {
+    const validateUsername = value => {
         if(value.length < 3 || value.length > 30) {
-         return (
-           <div className="alert alert-danger" role="alert">
-                Username must be between 3 and 30 characters.
-           </div>
-         );
+         return 'Username must be between 3 and 30 characters.';
         }
      }
      
-     const checkPassword = value => {
+    const validatePassword = value => {
        if(value.length < 6 || value.length > 30) {
-         return (
-           <div className="alert alert-danger" role="alert">
-                Password must be between 6 and 30 characters.
-           </div>
-         );
+         return 'Password must be between 6 and 30 characters.';
        }
        var upper = /[A-Z]/;
        var lower = /[a-z]/;
        var nums = /[0-9]/;
        if(!value.match(upper)||!value.match(lower)||!value.match(nums)) {
-         return (
-           <div className="alert alert-danger" role="alert">
-                Password must have numbers, uppercase letters and lowercase letters.
-           </div>
-         );
+         return 'Password must have numbers, uppercase letters and lowercase letters.';
        }
      }
 
-    const matchPassword = value => {
-        if (password !== repeatPassword) {
-            setMessage("Password and repeat don't match!");
-        } else {
-            setMessage('');
-        }
-    }; 
-
-    const handleRegister = (e) => {
-        e.preventDefault();  
-        console.log(username + ' ' + password);
-        authController.register(username, password);
-        history.push('/projects');
-        window.location.reload();
+    const validateConfirmPassword = (pass, value) => {
+      let error = "";
+      if (pass !== value) {
+        error = "Password not matched";
+      }
+      return error;
     };
 
     return ( 
-        <Form className="form" onSubmit={handleRegister}  
-        >
-            <h3>Register</h3>
-            <div>
-                <InputLabel>
-                    Username: 
-                    <Input type='username' name='username' value={username} onChange={e=>setUsername(e.target.value)} validations={[required, checkUser]}/>
-                </InputLabel>
-            </div>
-            <div>
-                <InputLabel>
-                    Password:
-                    <Input type='password' name='password' value={password} onChange={e=>setPassword(e.target.value)} validations={[required, checkPassword, matchPassword]}/>
-                </InputLabel>
-            </div>
-            <div>
-                <InputLabel>
-                    Repeat password:
-                    <Input type='password' name='repeat-password' value={repeatPassword} onChange={e=>setRepeat(e.target.value)} validations={[required, matchPassword]}/>
-                </InputLabel>
-            </div>
-            <div>
-                <Button type="submit">Submit</Button>
-            </div>
-            {message && (
+      <Formik
+      initialValues = {{
+        username: '',
+        password: '',
+        confirmPassword: ''
+      }}
+      onSubmit={values => {
+        authController.register(values.username, values.password)
+        .then(() => {
+          history.push("/project");
+          window.location.reload();
+        },
+        error => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+            setMessage(resMessage);            
+        });
+      }}
+    >
+      {({ errors, touched, values }) => (
+        <Form>
+          <h3>Register</h3>
+          <div>
+          <label>Username:</label>
+          <Field name="username" validate={validateUsername} />
+          {errors.username && touched.username && <div>{errors.username}</div>}
+          </div>
+
+          <div>
+          <label>Password:</label>
+          <Field name="password" type="password" validate={validatePassword} />
+          {errors.password && touched.password && <div>{errors.password}</div>}
+          </div>
+
+          <div>
+          <label>Confirm password:</label>
+          <Field name="confirmPassword" type="password" validate={value=>validateConfirmPassword(values.password, value)} />
+          {errors.confirmPassword && <div>{errors.confirmPassword}</div>}
+          </div>
+
+          <button className="btn" type="submit">Submit</button>
+          {message && (
                 <div className="form-group">
                   <div className="alert alert-danger" role="alert">
                     {message}
                   </div>
                 </div>
-            )}
+          )}
         </Form>
+      )}
+    </Formik>
     );
 }
 export default Register;
