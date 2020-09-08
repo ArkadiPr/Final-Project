@@ -11,7 +11,7 @@ const MainPage = (props) => {
         setRole(true);
     };
 
-      const switchToExecutor = (e) => {
+    const switchToExecutor = (e) => {
         e.preventDefault();
         setRole(false);
     };
@@ -31,8 +31,10 @@ const MainPage = (props) => {
                 <Button onClick={logout}>Logout</Button>
             </div>
             <div className="projectCards">
-                <Projects role={isOwner}></Projects>
+                {/* <Projects role={isOwner}></Projects>
+                <CreateProject></CreateProject> */}
             </div>
+            {}
         </div>
     );
 }
