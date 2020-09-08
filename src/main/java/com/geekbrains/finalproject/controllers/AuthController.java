@@ -111,7 +111,7 @@ public class AuthController {
         userRepository.save(user);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -125,6 +125,5 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 listRoles));
-       // return ResponseEntity.ok("User registered successfully!");
     }
 }
