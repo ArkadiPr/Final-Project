@@ -4,10 +4,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import authController from '../api/authController';
+import history from "../history";
+
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-  
+    const [message, setMessage] = useState('');
+
     const required = (value) => {
         if (!value.toString().trim().length) {
           return 'require';
@@ -17,7 +20,19 @@ const Login = (props) => {
     const handleLogin = (e) => {
         e.preventDefault();
         console.log(username + ' ' + password);
-        authController.login(username, password);
+        authController.login(username, password).then(() => {
+            history.push("/projects");
+            window.location.reload();
+          },
+          error => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+              setMessage(resMessage);            
+          });
     };
 
     return ( 
@@ -38,6 +53,13 @@ const Login = (props) => {
             <div>
                 <Button type="submit">Submit</Button>
             </div>
+            {message && (
+                <div className="form-group">
+                  <div className="alert alert-danger" role="alert">
+                    {message}
+                  </div>
+                </div>
+          )}
         </Form>
     );
 }
