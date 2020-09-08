@@ -4,16 +4,17 @@ import projectController from '../api/projectController';
 import authController from '../api/authController';
 import history from '../history';
 const Projects = (props) => {
-    const [user, setUser] = useState(authController.getCurrentUser());
+    const user = authController.getCurrentUser();
     const [projects, setProjects] = useState([]);
     const role = props;
+
     useEffect(() => {
-        if(user===null) {
+        if(user === null) {
           history.push("/");
           window.location.reload();
         } 
         else {
-            if(role==true) {
+            if(role === true) {
                 setProjects(projectController.getOwnerProjects(user.id));
             } else {
                 setProjects(projectController.getExecutorProjects(user.id));
@@ -30,9 +31,9 @@ const Projects = (props) => {
         <div>
             <ul>
                 {projects.map(item => (
-                      <li>
+                    <li>
                         <Button onClick={openProject(item.id)}>{item.name}</Button>
-                      </li>
+                    </li>
                 ))}
             </ul>
         </div>

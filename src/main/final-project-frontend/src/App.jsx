@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import Login from './components/login';
 import Button from '@material-ui/core/Button';

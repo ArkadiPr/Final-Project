@@ -12,19 +12,19 @@ const Register = (props) => {
         if(value.length < 3 || value.length > 30) {
          return 'Username must be between 3 and 30 characters.';
         }
-     }
+    }
      
     const validatePassword = value => {
        if(value.length < 6 || value.length > 30) {
-         return 'Password must be between 6 and 30 characters.';
+        return 'Password must be between 6 and 30 characters.';
        }
        var upper = /[A-Z]/;
        var lower = /[a-z]/;
        var nums = /[0-9]/;
        if(!value.match(upper)||!value.match(lower)||!value.match(nums)) {
-         return 'Password must have numbers, uppercase letters and lowercase letters.';
+        return 'Password must have numbers, uppercase letters and lowercase letters.';
        }
-     }
+    }
 
     const validateConfirmPassword = (pass, value) => {
       let error = "";

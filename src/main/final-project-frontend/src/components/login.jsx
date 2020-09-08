@@ -1,7 +1,7 @@
 import Form from 'react-validation/build/form';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import authController from '../api/authController';
 const Login = (props) => {
