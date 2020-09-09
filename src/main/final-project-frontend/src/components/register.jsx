@@ -44,7 +44,7 @@ const Register = (props) => {
       onSubmit={values => {
         authController.register(values.username, values.password)
         .then(() => {
-          history.push("/project");
+          history.push("/projects");
           window.location.reload();
         },
         error => {
