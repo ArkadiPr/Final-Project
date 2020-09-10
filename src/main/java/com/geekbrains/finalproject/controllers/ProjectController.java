@@ -26,6 +26,14 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
+    @GetMapping("/owners/{id}")
+    public List<Project> getProjectByUserId(@PathVariable Long id) {
+        return projectService.findAllByUserName(id);
+    }
+
+    @GetMapping("{username}")
+    public List<Project> getProjectByUserName(@PathVariable String userName) { return  projectService.findAllProjectsByExecutorsName(userName);}
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createNewProject(@RequestBody Project project) {

@@ -32,4 +32,12 @@ public class ProjectService {
     public List<Project> findAll() {
         return projectRepository.findAll();
     }
+
+    public List<Project> findAllByUserName(Long id){
+        return projectRepository.findAllByUserName(id);
+    }
+
+    public List<Project> findAllProjectsByExecutorsName(String username){
+        return projectRepository.findAllProjectsByExecutorsName(username);
+    }
 }
