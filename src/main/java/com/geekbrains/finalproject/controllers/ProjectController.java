@@ -26,6 +26,11 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
+    @GetMapping("/owners/{id}")
+    public List<Project> getProjectByUserId(@PathVariable Long id) {
+        return projectService.findAllByUserName(id);
+    }
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createNewProject(@RequestBody Project project) {
