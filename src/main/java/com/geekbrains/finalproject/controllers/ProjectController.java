@@ -27,12 +27,12 @@ public class ProjectController {
     }
 
     @GetMapping("/owners/{id}")
-    public List<Project> getProjectByUserId(@PathVariable Long id) {
-        return projectService.findAllByUserName(id);
+    public List<Project> getProjectByOwnerId(@PathVariable Long id) {
+        return projectService.findAllByOwnerId(id);
     }
 
     @GetMapping("{username}")
-    public List<Project> getProjectByUserName(@PathVariable String userName) { return  projectService.findAllProjectsByExecutorsName(userName);}
+    public List<Project> getProjectByUserName(@PathVariable String username) { return  projectService.findAllProjectsByExecutorsName(username);}
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
