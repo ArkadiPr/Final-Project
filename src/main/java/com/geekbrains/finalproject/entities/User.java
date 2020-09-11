@@ -44,6 +44,4 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;
-
-
 }

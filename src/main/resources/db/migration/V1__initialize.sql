@@ -45,7 +45,7 @@ status varchar(80), priority varchar(80),
 project_id bigint references projects(id)
 );
 
-insert into tasks(title,description ,status, priority ,project_id)
+insert into tasks(title, description, status, priority ,project_id)
 values ('task1', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
        ('task2', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
        ('task3', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 2),

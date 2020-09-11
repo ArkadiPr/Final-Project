@@ -1,6 +1,7 @@
 package com.geekbrains.finalproject.controllers;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.services.ProjectService;
 import lombok.AllArgsConstructor;
@@ -26,13 +27,13 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
-    @GetMapping("/owners/{id}")
-    public List<Project> getProjectByOwnerId(@PathVariable Long id) {
+    @GetMapping("/dtos/owners/{id}")
+    public List<ProjectDTO> getProjectByOwnerId(@PathVariable Long id) {
         return projectService.findAllByOwnerId(id);
     }
-
-    @GetMapping("{username}")
-    public List<Project> getProjectByUserName(@PathVariable String username) { return  projectService.findAllProjectsByExecutorsName(username);}
+//
+//    @GetMapping("{username}")
+//    public List<ProjectDTO> getProjectByUserName(@PathVariable String username) { return  projectService.findAllProjectsByExecutorsName(username);}
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
