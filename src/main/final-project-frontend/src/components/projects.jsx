@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import projectController from '../api/projectController';
 import authController from '../api/authController';
 import history from '../history';
 import axios from 'axios';
@@ -9,10 +8,9 @@ const Projects = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
 
     const user = authController.getCurrentUser();
-    const [projects, setProjects] = useState([  ]);
+    const [projects, setProjects] = useState([]);
     const [isOwner, setRole] = useState(true);
-    const [projectId, setProjectId] = useState(-1);
-    const {setPage} = props
+    const {setPage, setProjectId} = props
 
 
     useEffect(() => {
@@ -51,6 +49,7 @@ const Projects = (props) => {
 
     const switchToCreateProject = (e) => {
         e.preventDefault();
+        setProjectId(-1);
         setPage(3);
     };
 
