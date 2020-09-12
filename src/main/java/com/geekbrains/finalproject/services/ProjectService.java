@@ -38,7 +38,7 @@ public class ProjectService {
         return projectRepository.findAllByOwnerId(id);
     }
 
-//    public List<ProjectDTO> findAllProjectsByExecutorsName(String username){
-//        return projectRepository.findAllProjectsByExecutorsName(username);
-//    }
+    public List<ProjectDTO> findAllProjectsByExecutorsName(Long id){
+        return projectRepository.findAllProjectsByExecutorsName(id);
+    }
 }

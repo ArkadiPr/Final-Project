@@ -31,9 +31,9 @@ public class ProjectController {
     public List<ProjectDTO> getProjectByOwnerId(@PathVariable Long id) {
         return projectService.findAllByOwnerId(id);
     }
-//
-//    @GetMapping("{username}")
-//    public List<ProjectDTO> getProjectByUserName(@PathVariable String username) { return  projectService.findAllProjectsByExecutorsName(username);}
+
+    @GetMapping("/dtos/executors/{id}")
+    public List<ProjectDTO> getProjectByUserName(@PathVariable Long id) { return  projectService.findAllProjectsByExecutorsName(id);}
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
