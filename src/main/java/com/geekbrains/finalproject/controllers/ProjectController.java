@@ -1,13 +1,11 @@
 package com.geekbrains.finalproject.controllers;
 
 import com.geekbrains.finalproject.entities.Project;
-import com.geekbrains.finalproject.entities.User;
 import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.services.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
