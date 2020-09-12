@@ -3,6 +3,7 @@ package com.geekbrains.finalproject.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -41,6 +42,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(mappedBy = "task")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Comment> comments;
 
 
     @AllArgsConstructor

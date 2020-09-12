@@ -41,9 +41,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     private List<Task> tasks;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;
+
+    @OneToMany(mappedBy = "fromUser")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Comment> commentsFromUser;
 
 
 }
