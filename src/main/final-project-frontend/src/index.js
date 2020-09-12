@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import history from './history';
 import { positions, Provider } from "react-alert";
 import AlertMUITemplate from "react-alert-template-mui";
+import CreateProject from './components/createProject';
 
 const options = {
   position: positions.MIDDLE
@@ -19,6 +20,7 @@ ReactDOM.render(
   <Switch>
    <Route exact path="/" component={App} />
    <Route exact path="/projects" component={MainPage} />
+   <Route exact path="/create" component={CreateProject} /> 
  </Switch>
  </Router>
  </Provider>,

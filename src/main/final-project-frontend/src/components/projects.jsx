@@ -4,14 +4,13 @@ import authController from '../api/authController';
 import history from '../history';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
+
 const Projects = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
-
     const user = authController.getCurrentUser();
     const [projects, setProjects] = useState([]);
     const [isOwner, setRole] = useState(true);
     const {setPage, setProjectId} = props
-
 
     useEffect(() => {
         if(user === null) {
@@ -49,8 +48,8 @@ const Projects = (props) => {
 
     const switchToCreateProject = (e) => {
         e.preventDefault();
-        setProjectId(-1);
-        setPage(3);
+        history.push("/create");
+        window.location.reload();
     };
 
     const openProject = (e, id) => {
@@ -59,18 +58,14 @@ const Projects = (props) => {
         setPage(2);
     };
 
-    return (
+
+    return (    
+        <div>
+            <Button onClick={switchToCreateProject}>Create project</Button>
         <div>
             <Button onClick={switchToOwner}>Owner</Button>
             <Button onClick={switchToExecutor}>Executor</Button>
-            <Button onClick={switchToCreateProject}>Create project</Button>
-            <ul>
-                {projects.map(item => (
-                    <li>
-                        <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
-                    </li>
-                ))}
-            </ul>
+        </div>
         </div>
     );
 }

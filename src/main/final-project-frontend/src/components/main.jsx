@@ -25,7 +25,6 @@ const MainPage = (props) => {
             <div>
                 {page===1 && <Projects setPage={setPage} setProjectId={setProjectId}></Projects>}
                 {page===2 && <Project setPage={setPage} projectId={projectId}></Project>}
-                {page===3 && <CreateProject setPage={setPage} setProjectId={setProjectId}></CreateProject>}
             </div>
         
         </div>
