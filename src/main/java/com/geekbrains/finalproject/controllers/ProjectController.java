@@ -1,12 +1,16 @@
 package com.geekbrains.finalproject.controllers;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.User;
+import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.services.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,23 +20,18 @@ import java.util.List;
 public class ProjectController {
     private ProjectService projectService;
 
-    @GetMapping
-    public List<Project> getAllProjects() {
-        return projectService.findAll();
-    }
-
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
         return projectService.findById(id);
     }
 
-    @GetMapping("/owners/{id}")
-    public List<Project> getProjectByOwnerId(@PathVariable Long id) {
-        return projectService.findAllByOwnerId(id);
+    @GetMapping("/owners")
+    public List<ProjectDTO> getProjectByOwnerId(Principal user) {
+        return projectService.findAllByOwnerId(user.getName());
     }
 
-    @GetMapping("{username}")
-    public List<Project> getProjectByUserName(@PathVariable String username) { return  projectService.findAllProjectsByExecutorsName(username);}
+    @GetMapping("/executors")
+    public List<ProjectDTO> getProjectByUserName(Principal user) { return  projectService.findAllProjectsByExecutorsName(user.getName());}
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)

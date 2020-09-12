@@ -1,6 +1,7 @@
 package com.geekbrains.finalproject.services;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.repositories.ProjectRepository;
 import lombok.AllArgsConstructor;
@@ -29,15 +30,11 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public List<Project> findAll() {
-        return projectRepository.findAll();
+    public List<ProjectDTO> findAllByOwnerId(String username){
+        return projectRepository.findAllByOwnerId(username);
     }
 
-    public List<Project> findAllByOwnerId(Long id){
-        return projectRepository.findAllByOwnerId(id);
-    }
-
-    public List<Project> findAllProjectsByExecutorsName(String username){
+    public List<ProjectDTO> findAllProjectsByExecutorsName(String username){
         return projectRepository.findAllProjectsByExecutorsName(username);
     }
 }

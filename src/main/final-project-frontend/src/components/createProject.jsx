@@ -22,6 +22,7 @@ const CreateProject = (props) => {
 
     const openNewProject = (e) => {
         e.preventDefault();
+        //TODO: разобраться с тем, что отправлять при запросе "создать проект"
         const newProject = {id: null, projectName: projectName, user: user, tasks: null};
         return axios.post(API_URL, newProject, 
             {headers: authHeader()})

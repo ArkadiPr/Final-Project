@@ -3,8 +3,10 @@ package com.geekbrains.finalproject.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class Task {
     @Column(name = "priority")
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    @CreationTimestamp
+    private LocalDateTime createdTime;
 
     @ManyToMany
     @JoinTable(name = "users_tasks",
