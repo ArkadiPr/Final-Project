@@ -30,10 +30,6 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public List<Project> findAll() {
-        return projectRepository.findAll();
-    }
-
     public List<ProjectDTO> findAllByOwnerId(String username){
         return projectRepository.findAllByOwnerId(username);
     }

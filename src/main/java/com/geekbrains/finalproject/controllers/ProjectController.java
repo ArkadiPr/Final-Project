@@ -20,12 +20,6 @@ import java.util.List;
 public class ProjectController {
     private ProjectService projectService;
 
-    //todo зачем нужен ?
-    @GetMapping
-    public List<Project> getAllProjects() {
-        return projectService.findAll();
-    }
-
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
         return projectService.findById(id);
