@@ -17,11 +17,6 @@ const Project = (props) =>{
             });
     },[]);
 
-    const switchToCreateProject = (e) => {
-        e.preventDefault();
-        setPage(3);
-    };
-
     const switchToProjects = (e) => {
         e.preventDefault();
         setPage(1);
@@ -31,7 +26,6 @@ const Project = (props) =>{
         <div>
             <h3>Project</h3>
             <div className="navbar">
-                <Button onClick={switchToCreateProject}>CreateProject</Button>
                 <Button onClick={switchToProjects}>Projects</Button>
             </div>
             <div>
