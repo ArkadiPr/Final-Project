@@ -8,8 +8,9 @@ import authHeader from '../api/authHeader';
 const Projects = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
     const user = authController.getCurrentUser();
-    const [projects, setProjects] = useState([]);
-    const [isOwner, setRole] = useState(true);
+    const [ownerProjects, setOwnerProjects] = useState([]);
+    const [executorProjects, setExecutorProjects] = useState([]);
+    const [projectsType, setProjectsType] = useState(true);
     const {setPage, setProjectId} = props
 
     useEffect(() => {
@@ -18,32 +19,36 @@ const Projects = (props) => {
           window.location.reload();
         } 
         else {
-            if(isOwner === true) {
-                return axios.get(API_URL + 'dtos/owners/'+ user.id, 
-                {headers: authHeader()})
-                .then(res => { 
-                    console.log(res);
-                    setProjects(res.data);
-                });
-            } else {  
-                return axios.get(API_URL+ "dtos/executor/" + user.id, 
+            getOwnerProjects();
+            getExecutorProjects();
+        }    
+    },[]);
+
+    const getOwnerProjects = () => {
+        return axios.get(API_URL + 'owners/', 
+        {headers: authHeader()})
+        .then(res => { 
+            console.log(res);
+            setOwnerProjects(res.data);
+        });
+    };
+
+    const getExecutorProjects = () => {
+        return axios.get(API_URL+ 'executors/', 
                 {headers: authHeader()})
                 .then(res => {
-                    setProjects(res.data);
+                    setExecutorProjects(res.data);
                 });     
-            }
-        }
-        console.log(user);
-    },[]);
+    };
 
     const switchToOwner = (e) => {
         e.preventDefault();
-        setRole(true);
+        setProjectsType(true);
     };
 
     const switchToExecutor = (e) => {
         e.preventDefault();
-        setRole(false);
+        setProjectsType(false);
     };
 
     const switchToCreateProject = (e) => {
@@ -66,6 +71,18 @@ const Projects = (props) => {
             <Button onClick={switchToOwner}>Owner</Button>
             <Button onClick={switchToExecutor}>Executor</Button>
         </div>
+        <ul>
+               { projectsType === true && ownerProjects.map(item => (
+                    <li>
+                        <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
+                    </li>
+                )) }
+                { projectsType === false && executorProjects.map(item => (
+                    <li>
+                        <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
+                    </li>
+                )) }
+        </ul>
         </div>
     );
 }
