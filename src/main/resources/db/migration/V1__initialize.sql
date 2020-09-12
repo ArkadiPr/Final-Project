@@ -5,8 +5,8 @@ password varchar(255) not null
 );
 
 insert into users (username, password)
-values ('user1', '$2a$10$P.YjFEh1CknEIznlBbK07OnejewUp91v1GZLSsJpS./h6H0uWfsp2'),
-       ('user2', '$2a$10$P.YjFEh1CknEIznlBbK07OnejewUp91v1GZLSsJpS./h6H0uWfsp4'),
+values ('user1', '$2a$10$P.YjFEh1CknEIznlBbK07OnejewUp91v1GZLSsJpS./h6H0uWfsp6'),
+       ('user2', '$2a$10$P.YjFEh1CknEIznlBbK07OnejewUp91v1GZLSsJpS./h6H0uWfsp6'),
        ('user','$2a$10$P.YjFEh1CknEIznlBbK07OnejewUp91v1GZLSsJpS./h6H0uWfsp6');
 
 
