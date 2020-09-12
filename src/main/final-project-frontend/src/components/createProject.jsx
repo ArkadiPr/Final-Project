@@ -22,6 +22,7 @@ const CreateProject = (props) => {
 
     const createNewProject = (e) => {
         e.preventDefault();
+
         if(!isTasksCreated) {
             console.log("Tasks weren't created!");
         }

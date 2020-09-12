@@ -42,10 +42,11 @@ create table tasks (
 id bigserial primary key not null,
 title varchar(255), description varchar(1024),
 status varchar(80), priority varchar(80),
-project_id bigint references projects(id)
+project_id bigint references projects(id),
+created_at TIMESTAMP DEFAULT current_timestamp
 );
 
-insert into tasks(title,description ,status, priority ,project_id)
+insert into tasks(title, description, status, priority ,project_id)
 values ('task1', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
        ('task2', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
        ('task3', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 2),

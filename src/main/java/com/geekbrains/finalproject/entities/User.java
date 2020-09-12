@@ -18,7 +18,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username" , unique = true)
     private String username;
 
     @Column(name = "password")
@@ -44,6 +44,4 @@ public class User {
     @OneToMany(mappedBy = "user")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;
-
-
 }

@@ -19,14 +19,14 @@ const Projects = (props) => {
         } 
         else {
             if(isOwner === true) {
-                return axios.get(API_URL, 
+                return axios.get(API_URL + 'dtos/owners/'+ user.id, 
                 {headers: authHeader()})
                 .then(res => { 
                     console.log(res);
                     setProjects(res.data);
                 });
             } else {  
-                return axios.get(API_URL+ "executor/" + user.id, 
+                return axios.get(API_URL+ "dtos/executor/" + user.id, 
                 {headers: authHeader()})
                 .then(res => {
                     setProjects(res.data);
@@ -65,13 +65,6 @@ const Projects = (props) => {
         <div>
             <Button onClick={switchToOwner}>Owner</Button>
             <Button onClick={switchToExecutor}>Executor</Button>
-            {/* <ul>
-                {projects.map(item => (
-                    <li>
-                        <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
-                    </li>
-                ))}
-            </ul> */}
         </div>
         </div>
     );
