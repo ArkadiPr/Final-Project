@@ -34,11 +34,11 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public List<ProjectDTO> findAllByOwnerId(Long id){
-        return projectRepository.findAllByOwnerId(id);
+    public List<ProjectDTO> findAllByOwnerId(String username){
+        return projectRepository.findAllByOwnerId(username);
     }
 
-    public List<ProjectDTO> findAllProjectsByExecutorsName(Long id){
-        return projectRepository.findAllProjectsByExecutorsName(id);
+    public List<ProjectDTO> findAllProjectsByExecutorsName(String username){
+        return projectRepository.findAllProjectsByExecutorsName(username);
     }
 }
