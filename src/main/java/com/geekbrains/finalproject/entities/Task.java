@@ -33,6 +33,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdTime;
 

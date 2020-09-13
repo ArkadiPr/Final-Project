@@ -1,5 +1,6 @@
 package com.geekbrains.finalproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
@@ -35,12 +36,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "users_tasks",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     private List<Task> tasks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;

@@ -1,5 +1,6 @@
 package com.geekbrains.finalproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
 
@@ -18,6 +19,7 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "project")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks;
