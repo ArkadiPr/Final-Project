@@ -11,13 +11,17 @@ const Task = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const user = authController.getCurrentUser();
     const taskId = localStorage.getItem('taskId');
+    const owner = localStorage.getItem('owner');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('');
     const [task, setTask] = useState(null);
     const [role, setRole] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [executor, setExecutor] = useState('');
     const [canEdit, setCanEdit] = useState(false);
+    const [canAdd, setCanAdd] = useState(false);
     const statusArray = [
         {value : 'IS_CREATE', label : 'Создана'},
         {value : 'IN_PROGRESS', label : 'В работе'},
@@ -69,6 +73,11 @@ const Task = (props) => {
         setCanEdit(!canEdit);
     };
 
+    const editAdd = (e) => {
+        e.preventDefault();
+        setCanAdd(!canAdd);
+    };
+
     const updateTask = (e) => { 
         e.preventDefault();
         const updatedTask = {id: task.id, title: title, description: description, users: task.users,
@@ -81,6 +90,15 @@ const Task = (props) => {
                 setTitle(res.data.title);
         });
         setCanEdit(!canEdit);
+    };
+
+    const addNewExecutor = (e) => {
+        axios.put(API_URL,  executor,
+            {headers: authHeader()})
+            .then(res => { 
+                console.log(res);
+        });
+        window.location.reload();
     };
 
     return (
@@ -177,10 +195,37 @@ const Task = (props) => {
                   ))}
                  </TextField>}
             </div>
-            
+
+            <div>
+                <label>Executors:</label>
+            </div>
+            <div>    
+                {task &&
+                task.users.map((item, index) => (
+                    <TextField 
+                    key={index}
+                    id="filled-read-only-input" 
+                    label="executor" 
+                    value={item.username}  
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    variant="filled"
+                    />
+                  ))
+                }        
+            </div>
+            <div>
+                {user.username===owner && canAdd===true && <TextField label="executor" 
+                value={executor} 
+                onChange={e=>setExecutor(e.target.value)} 
+                variant="outlined"/>}
+                {user.username===owner && canAdd===false && <Button onClick={editAdd}>Add executor</Button>}
+                {user.username===owner && canAdd===true && <Button onClick={addNewExecutor}>Add new executor</Button>}
+            </div>
             <div>
                 {task && canEdit===false && <Button onClick={editData}>Edit</Button>}
-                {canEdit === true && <Button onClick={updateTask}>Ok</Button>}
+                {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
                 {canEdit === true && <Button onClick={editData}>Cancel</Button>}
             </div>
         </div>
