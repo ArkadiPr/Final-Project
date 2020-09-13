@@ -12,6 +12,11 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtUtils {
+    private static final String JWT_SIGN = "Invalid JWT signature: {}";
+    private static final String JWT_TOK = "Invalid JWT token: {}";
+    private static final String JWT_EXP = "JWT token is expired: {}";
+    private static final String JWT_UNS = "JWT token is unsupported: {}";
+    private static final String JWT_EMPTY = "JWT claims string is empty: {}";
 
     @Value("${jwtSecret}")
     private String jwtSecret;
@@ -40,15 +45,15 @@ public class JwtUtils {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
-            log.error("Invalid JWT signature: {}", e.getMessage());
+            log.error(JWT_SIGN, e.getMessage());
         } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
+            log.error(JWT_TOK, e.getMessage());
         } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
+            log.error(JWT_EXP, e.getMessage());
         } catch (UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
+            log.error(JWT_UNS, e.getMessage());
         } catch (IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+            log.error(JWT_EMPTY, e.getMessage());
         }
 
         return false;
