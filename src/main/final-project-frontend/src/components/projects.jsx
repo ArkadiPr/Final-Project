@@ -11,31 +11,32 @@ const Projects = (props) => {
     const [ownerProjects, setOwnerProjects] = useState([]);
     const [executorProjects, setExecutorProjects] = useState([]);
     const [projectsType, setProjectsType] = useState(true);
-    const {setPage, setProjectId} = props
 
     useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
         if(user === null) {
           history.push("/");
           window.location.reload();
         } 
         else {
-            getOwnerProjects();
-            getExecutorProjects();
+            getOwnerProjects(source);
+            getExecutorProjects(source);
         }    
     },[]);
 
-    const getOwnerProjects = () => {
+    const getOwnerProjects = (source) => {
         return axios.get(API_URL + 'owners/', 
-        {headers: authHeader()})
+        {headers: authHeader(), cancelToken: source.token})
         .then(res => { 
             console.log(res);
             setOwnerProjects(res.data);
         });
     };
 
-    const getExecutorProjects = () => {
+    const getExecutorProjects = (source) => {
         return axios.get(API_URL+ 'executors/', 
-                {headers: authHeader()})
+                {headers: authHeader(), cancelToken: source.token})
                 .then(res => {
                     setExecutorProjects(res.data);
                 });     
@@ -53,20 +54,28 @@ const Projects = (props) => {
 
     const switchToCreateProject = (e) => {
         e.preventDefault();
-        history.push("/create");
+        history.push("/create-project");
         window.location.reload();
     };
 
     const openProject = (e, id) => {
         e.preventDefault();
-        setProjectId(id);
-        setPage(2);
+        localStorage.setItem('projectId', id);
+        history.push("/project");
+        window.location.reload();
     };
 
+    const logout = (e) => {
+        e.preventDefault();
+        authController.logout();
+        history.push("/");
+        window.location.reload();
+    };
 
     return (    
         <div>
             <Button onClick={switchToCreateProject}>Create project</Button>
+            <Button onClick={logout}>Logout</Button>
         <div>
             <Button onClick={switchToOwner}>Owner</Button>
             <Button onClick={switchToExecutor}>Executor</Button>
