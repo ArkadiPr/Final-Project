@@ -33,7 +33,7 @@ const CreateTask = (props) => {
         {value : 'IS_DONE', label : 'Завершена'},
         {value : 'IS_CANCELED', label : 'Отменена'}
     ];
-    
+
     const priorityArray = [
         {value : 'IN_THE_PLANS', label : 'В планах'},
         {value : 'VERY_LOW', label : 'Очень низкий'},
@@ -57,7 +57,13 @@ const CreateTask = (props) => {
 
     const createNewTask = (e) => {
         e.preventDefault();
-        const newTask = {title: title, description: description, status: status, priority: priority};
+        const newTask = {
+            title: title, 
+            description: description, 
+            status: status, 
+            priority: priority,
+            projectId: projectId
+        };
         axios.post(API_URL, newTask, 
             {headers: authHeader()})
             .then(res => { 
