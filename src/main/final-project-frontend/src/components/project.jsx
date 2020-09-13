@@ -77,9 +77,20 @@ const Project = (props) =>{
                         readOnly: true,
                     }}
                     variant="filled"/>}
-                {project && canEdit === true && <TextField id="outlined-basic" label="Project name" value={projectName} onChange={e=>setName(e.target.value)} variant="outlined"></TextField>}
-                {project && project.user.username === user.username && canEdit===false && <Button onClick={editProjectName}>Edit</Button>}
+                {project && canEdit === true && 
+                    <TextField 
+                        id="outlined-basic" 
+                        label="Project name" 
+                        value={projectName} 
+                        onChange={e=>setName(e.target.value)} 
+                        variant="outlined"></TextField>
+                }
+                <div>
+                {project && project.user.username === user.username && canEdit===false 
+                && <Button onClick={editProjectName}>Edit</Button>}
                 {canEdit === true && <Button onClick={updateProjectName}>Ok</Button>}
+                {canEdit === true && <Button onClick={editProjectName}>Cancel</Button>}
+                </div>
             </div>
             <div>
                 {project && 
@@ -96,7 +107,37 @@ const Project = (props) =>{
                 <ul>
                     {project && project.tasks.map(item => (
                         <li>
-                            <Button onClick={e=>switchToTask(e, item.id)}>{item.title} : {item.priority} : {item.status}</Button>
+                            <Button onClick={e=>switchToTask(e, item.id)}>
+                                {/* {item.title} : {item.priority} : {item.status} */}
+                                <TextField id="filled-read-only-input" 
+                                    label="title" 
+                                    value={item.title}  
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    variant="filled"/>
+                                <TextField id="filled-read-only-input" 
+                                    label="priority" 
+                                    value={item.priority}  
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                variant="filled"/>
+                                <TextField id="filled-read-only-input" 
+                                    label="status" 
+                                    value={item.status}  
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    variant="filled"/>
+                                 <TextField id="filled-read-only-input" 
+                                    label="created date" 
+                                    value={item.createdTime}  
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    variant="filled"/>    
+                            </Button>
                         </li>
                     ))}
                 </ul>
