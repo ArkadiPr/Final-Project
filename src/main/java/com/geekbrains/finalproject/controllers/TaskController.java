@@ -50,7 +50,6 @@ public class TaskController {
         }
         Task task=taskService.findById(taskModifyDTO.getId());
         task.setProject(projectService.findById(taskModifyDTO.getProjectId()));
-        task.getUsers().add(projectService.findById(taskModifyDTO.getProjectId()).getUser());
         task.setCreatedTime(taskModifyDTO.getCreatedTime());
         task.setDescription(taskModifyDTO.getDescription());
         task.setPriority(taskModifyDTO.getPriority());
@@ -59,14 +58,15 @@ public class TaskController {
         return taskService.saveOrUpdate(task);
     }
 
-    @PutMapping("/{username}")
-    public Task modifyTaskAddExecutor(@PathVariable TaskDto taskDto) {
+    @PutMapping("/executor")
+    public Task modifyTaskAddExecutor(@RequestBody TaskDto taskDto) {
         User user=userService.findByUsername(taskDto.getUsername()).orElse(null);
         Task task=taskService.findById(taskDto.getId());
         if(user!=null){
             task.getUsers().add(user);
+            //user.getTasks().add(task);
         }
-        return task;
+        return taskService.saveOrUpdate(task);
     }
 
 
