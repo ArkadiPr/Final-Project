@@ -1,16 +1,19 @@
 package com.geekbrains.finalproject.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tasks")
 public class Task {
     @Id
@@ -32,16 +35,20 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdTime;
+
     @ManyToMany
     @JoinTable(name = "users_tasks",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-
 
     @AllArgsConstructor
     @Getter
