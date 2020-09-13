@@ -92,7 +92,7 @@ const Task = (props) => {
     };
 
     const addNewExecutor = (e) => {
-        axios.put(API_URL,  executor,
+        axios.put(API_URL + executor,
             {headers: authHeader()})
             .then(res => { 
                 console.log(res);
@@ -194,7 +194,11 @@ const Task = (props) => {
                   ))}
                  </TextField>}
             </div>
-
+            <div>
+                {task && canEdit===false && <Button onClick={editData}>Edit</Button>}
+                {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
+                {canEdit === true && <Button onClick={editData}>Cancel</Button>}
+            </div>
             <div>
                 <label>Executors:</label>
             </div>
@@ -221,11 +225,6 @@ const Task = (props) => {
                 variant="outlined"/>}
                 {user.username===owner && canAdd===false && <Button onClick={editAdd}>Add executor</Button>}
                 {user.username===owner && canAdd===true && <Button onClick={addNewExecutor}>Add new executor</Button>}
-            </div>
-            <div>
-                {task && canEdit===false && <Button onClick={editData}>Edit</Button>}
-                {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
-                {canEdit === true && <Button onClick={editData}>Cancel</Button>}
             </div>
         </div>
     );
