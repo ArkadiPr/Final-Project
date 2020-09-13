@@ -11,6 +11,7 @@ const Task = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const user = authController.getCurrentUser();
     const taskId = localStorage.getItem('taskId');
+    const projectId = localStorage.getItem('projectId');
     const owner = localStorage.getItem('owner');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -79,7 +80,7 @@ const Task = (props) => {
 
     const updateTask = (e) => { 
         e.preventDefault();
-        const updatedTask = {id: task.id, title: title, description: description, users: task.users,
+        const updatedTask = {id: task.id, title: title, description: description, projectId: projectId,
         status: status, priority: priority};
         axios.put(API_URL,  updatedTask,
             {headers: authHeader()})
@@ -92,11 +93,13 @@ const Task = (props) => {
     };
 
     const addNewExecutor = (e) => {
-        axios.put(API_URL + executor,
+        const newExecutor = {id: task.id, username: executor};
+        axios.put(API_URL + 'executor', newExecutor,
             {headers: authHeader()})
             .then(res => { 
                 console.log(res);
         });
+        setCanAdd(!canAdd);
         window.location.reload();
     };
 
@@ -195,7 +198,7 @@ const Task = (props) => {
                  </TextField>}
             </div>
             <div>
-                {task && canEdit===false && <Button onClick={editData}>Edit</Button>}
+                {task && canEdit===false && role===true && <Button onClick={editData}>Edit</Button>}
                 {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
                 {canEdit === true && <Button onClick={editData}>Cancel</Button>}
             </div>

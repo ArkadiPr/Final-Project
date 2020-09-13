@@ -16,6 +16,7 @@ const CreateTask = (props) => {
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('');
     const [task, setTask] = useState(null);
+    const projectId = localStorage.getItem('projectId');
 
     useEffect(()=>{ 
         if(user===null || user.username !== owner) {
@@ -32,6 +33,7 @@ const CreateTask = (props) => {
         {value : 'IS_DONE', label : 'Завершена'},
         {value : 'IS_CANCELED', label : 'Отменена'}
     ];
+    
     const priorityArray = [
         {value : 'IN_THE_PLANS', label : 'В планах'},
         {value : 'VERY_LOW', label : 'Очень низкий'},
