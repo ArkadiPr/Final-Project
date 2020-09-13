@@ -37,7 +37,7 @@ public class ProjectController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createNewProject(@RequestBody Project project,Principal user) {
+    public Project createNewProject(@RequestBody Project project, Principal user) {
         if (project.getId() != null) {
             project.setId(null);
         }
