@@ -21,12 +21,13 @@ const CreateProject = (props) => {
     const createNewProject = (e) => {
         e.preventDefault();
         const newProject = {projectName: projectName};
-        return axios.post(API_URL, newProject, 
+        axios.post(API_URL, newProject, 
             {headers: authHeader()})
             .then(res => { 
                 console.log(res.data);
         });
-    
+        history.push("/projects");
+        window.location.reload(); 
     };
     
     return (

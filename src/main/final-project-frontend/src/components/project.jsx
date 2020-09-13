@@ -13,7 +13,6 @@ const Project = (props) =>{
     const projectId = localStorage.getItem('projectId');
     const [projectName, setName] = useState('');
     useEffect(()=>{
-        console.log(user);
         return axios.get(API_URL + projectId, 
             {headers: authHeader()})
             .then(res => { 
@@ -93,7 +92,7 @@ const Project = (props) =>{
                         </li>
                     ))}
                 </ul>
-                <Button>Add new task</Button>
+                {project && project.user.username === user.username && <Button>Add new task</Button>}
             </div>
         </div>
     );
