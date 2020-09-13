@@ -48,7 +48,7 @@ public class TaskController {
         return taskService.saveOrUpdate(task);
     }
 
-    @GetMapping("/{username}")
+    @PutMapping("/{username}")
     public Task modifyTaskAddExecutor(@PathVariable TaskDto taskDto) {
         User user=userService.findByUsername(taskDto.getUsername()).orElse(null);
         Task task=taskService.findById(taskDto.getId());

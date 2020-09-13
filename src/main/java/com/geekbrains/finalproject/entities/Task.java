@@ -45,7 +45,6 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
