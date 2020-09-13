@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -36,10 +38,16 @@ public class TaskController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Task createNewTask(@RequestBody Task task) {
-        if (task.getId() != null) {
-            task.setId(null);
-        }
+    public Task createNewTask(@RequestBody TaskModifyDTO taskModifyDTO, Principal user) {
+        Task task = new Task();
+        task.setUsers(new ArrayList<>());
+        task.getUsers().add(userService.findByUsername(user.getName()).orElse(null));
+        task.setProject(projectService.findById(taskModifyDTO.getProjectId()));
+        task.setCreatedTime(taskModifyDTO.getCreatedTime());
+        task.setDescription(taskModifyDTO.getDescription());
+        task.setPriority(taskModifyDTO.getPriority());
+        task.setStatus(taskModifyDTO.getStatus());
+        task.setTitle(taskModifyDTO.getTitle());
         return taskService.saveOrUpdate(task);
     }
 
