@@ -19,7 +19,6 @@ const Login = (props) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(username + ' ' + password);
         authController.login(username, password).then(() => {
             history.push("/projects");
             window.location.reload();
