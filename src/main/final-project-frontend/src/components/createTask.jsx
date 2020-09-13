@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import history from '../history';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const CreateTask = (props) => {
+const CreateTask = () => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const user = authController.getCurrentUser();
     const owner = localStorage.getItem('owner');
@@ -15,7 +15,6 @@ const CreateTask = (props) => {
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('');
-    const [task, setTask] = useState(null);
     const projectId = localStorage.getItem('projectId');
 
     useEffect(()=>{ 
@@ -57,20 +56,29 @@ const CreateTask = (props) => {
 
     const createNewTask = (e) => {
         e.preventDefault();
-        const newTask = {
-            title: title, 
-            description: description, 
-            status: status, 
-            priority: priority,
-            projectId: projectId
-        };
-        axios.post(API_URL, newTask, 
-            {headers: authHeader()})
-            .then(res => { 
-                console.log(res.data);
-        });
-        history.push("/project");
-        window.location.reload(); 
+        console.log(status);
+        if (title.trim().length && description.trim().length) {
+            if (status === '') {
+                setStatus('IS_CREATE');
+            }
+            if (priority === '') {
+                setPriority('IN_THE_PLANS');
+            }
+            const newTask = {
+                title: title, 
+                description: description, 
+                status: status, 
+                priority: priority,
+                projectId: projectId
+            };
+            axios.post(API_URL, newTask, 
+                {headers: authHeader()})
+                .then(res => { 
+                    console.log(res.data);
+            });
+            //history.push("/project");
+            //window.location.reload(); 
+        } 
     };
 
     return (

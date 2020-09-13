@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
-import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
-import { Form, Field, List, Submit } from 'easy-react-form';
 
-const CreateProject = (props) => {
+const CreateProject = () => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
-    const user = authController.getCurrentUser();
     const [projectName, setProjectName] = useState('');
 
     const switchToProjects = (e) => {
@@ -20,14 +17,16 @@ const CreateProject = (props) => {
 
     const createNewProject = (e) => {
         e.preventDefault();
-        const newProject = {projectName: projectName};
-        axios.post(API_URL, newProject, 
-            {headers: authHeader()})
-            .then(res => { 
-                console.log(res.data);
-        });
-        history.push("/projects");
-        window.location.reload(); 
+        if (projectName.trim().length) {
+            const newProject = {projectName: projectName};
+            axios.post(API_URL, newProject, 
+                {headers: authHeader()})
+                .then(res => { 
+                    console.log(res.data);
+            });
+            history.push("/projects");
+            window.location.reload(); 
+        }   
     };
     
     return (

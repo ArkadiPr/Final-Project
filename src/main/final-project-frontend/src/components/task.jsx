@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import history from '../history';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const Task = (props) => {
+const Task = () => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const user = authController.getCurrentUser();
     const taskId = localStorage.getItem('taskId');
