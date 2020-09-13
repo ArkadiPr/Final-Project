@@ -1,6 +1,7 @@
 package com.geekbrains.finalproject.controllers;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.Task;
 import com.geekbrains.finalproject.entities.User;
 import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
@@ -50,6 +51,11 @@ public class ProjectController {
         if (!projectService.existsById(project.getId())) {
             throw new ResourceNotFoundException("Project with id: " + project.getId() + " doesn't exists");
         }
+        List<Task> tasks=project.getTasks();
+        for(Task task : tasks){
+            task.setProject(project);
+        }
+        project.setTasks(tasks);
         return projectService.saveOrUpdate(project);
     }
     @DeleteMapping("/{id}")

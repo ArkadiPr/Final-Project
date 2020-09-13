@@ -22,7 +22,7 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks;
 
