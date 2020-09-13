@@ -76,8 +76,8 @@ const CreateTask = () => {
                 .then(res => { 
                     console.log(res.data);
             });
-            //history.push("/project");
-            //window.location.reload(); 
+            history.push("/project");
+            window.location.reload(); 
         } 
     };
 

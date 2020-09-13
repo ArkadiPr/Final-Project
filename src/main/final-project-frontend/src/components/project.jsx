@@ -13,13 +13,19 @@ const Project = (props) =>{
     const projectId = localStorage.getItem('projectId');
     const [projectName, setName] = useState('');
     useEffect(()=>{
-        return axios.get(API_URL + projectId, 
-            {headers: authHeader()})
-            .then(res => { 
-                console.log(res);
-                setProject(res.data);
-                setName(res.data.projectName);
+        if(user===null) {
+            history.push("/");
+            window.location.reload();
+        } 
+        else {
+            return axios.get(API_URL + projectId, 
+                {headers: authHeader()})
+                .then(res => { 
+                    console.log(res);
+                    setProject(res.data);
+                    setName(res.data.projectName);
             });
+        }   
     },[2]);
 
     const switchToProjects = (e) => {

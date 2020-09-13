@@ -7,10 +7,12 @@ import com.geekbrains.finalproject.services.ProjectService;
 import com.geekbrains.finalproject.services.TaskService;
 import com.geekbrains.finalproject.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 import java.util.ArrayList;
 
+@Component
 @AllArgsConstructor
 public class TaskMapper {
     private UserService userService;

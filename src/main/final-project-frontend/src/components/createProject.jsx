@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
-
+import authController from '../api/authController';
 const CreateProject = () => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
     const [projectName, setProjectName] = useState('');
+    const user = authController.getCurrentUser();
+    
+    useEffect(()=>{ 
+        if(user===null) {
+            history.push("/");
+            window.location.reload();
+        }
+    },[]);
 
     const switchToProjects = (e) => {
         e.preventDefault();

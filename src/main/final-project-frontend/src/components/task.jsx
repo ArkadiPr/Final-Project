@@ -40,20 +40,26 @@ const Task = () => {
     ];
 
     useEffect(()=>{
-        return axios.get(API_URL + taskId, 
-            {headers: authHeader()})
-            .then(res => { 
-                console.log(res);
-                setTask(res.data);
-                setTitle(res.data.title);
-                setDescription(res.data.description);
-                setStatus(res.data.status);
-                setPriority(res.data.priority);
-                res.data.users.map(u => {
-                    if(u.username === user.username){
-                    setRole(true);
-                }});
-            });
+        if(user===null){
+            history.push("/");
+            window.location.reload();
+        } 
+        else {
+            return axios.get(API_URL + taskId, 
+                {headers: authHeader()})
+                .then(res => { 
+                    console.log(res);
+                    setTask(res.data);
+                    setTitle(res.data.title);
+                    setDescription(res.data.description);
+                    setStatus(res.data.status);
+                    setPriority(res.data.priority);
+                    res.data.users.map(u => {
+                        if(u.username === user.username){
+                        setRole(true);
+                    }});
+                });
+        }
     },[2]);
 
     const switchToProjects = (e) => {
