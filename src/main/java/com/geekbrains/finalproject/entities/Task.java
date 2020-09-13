@@ -51,8 +51,6 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
-
-
     @AllArgsConstructor
     @Getter
     public enum Status {
