@@ -36,6 +36,13 @@ const Project = (props) =>{
         window.location.reload();
     };
 
+    const switchToCreateTask = (e) => {
+        e.preventDefault();
+        localStorage.setItem('owner', project.user.username);
+        history.push("/create-task");
+        window.location.reload();
+    };
+
     const editProjectName = (e) => {
         e.preventDefault();
         setValue(!canEdit);
@@ -93,7 +100,7 @@ const Project = (props) =>{
                         </li>
                     ))}
                 </ul>
-                {project && project.user.username === user.username && <Button>Add new task</Button>}
+                {project && project.user.username === user.username && <Button onClick={switchToCreateTask}>Add new task</Button>}
             </div>
         </div>
     );

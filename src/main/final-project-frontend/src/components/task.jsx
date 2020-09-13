@@ -18,7 +18,6 @@ const Task = (props) => {
     const [priority, setPriority] = useState('');
     const [task, setTask] = useState(null);
     const [role, setRole] = useState(false);
-    const [users, setUsers] = useState([]);
     const [executor, setExecutor] = useState('');
     const [canEdit, setCanEdit] = useState(false);
     const [canAdd, setCanAdd] = useState(false);
