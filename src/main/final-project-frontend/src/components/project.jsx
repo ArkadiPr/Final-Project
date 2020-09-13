@@ -31,6 +31,7 @@ const Project = (props) =>{
     const switchToTask = (e, id) => {
         e.preventDefault();
         localStorage.setItem('taskId', id);
+        localStorage.setItem('owner', project.user.username);
         history.push("/task");
         window.location.reload();
     };
