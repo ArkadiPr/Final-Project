@@ -11,6 +11,7 @@ import { positions, Provider } from "react-alert";
 import AlertMUITemplate from "react-alert-template-mui";
 import CreateProject from './components/createProject';
 import Task from './components/task';
+import CreateTask from './components/createTask';
 
 const options = {
   position: positions.MIDDLE
@@ -25,6 +26,7 @@ ReactDOM.render(
    <Route exact path="/project" component={Project} /> 
    <Route exact path="/create-project" component={CreateProject} />
    <Route exact path="/task" component={Task} />
+   <Route exact path="/create-task" component={CreateTask} />
  </Switch>
  </Router>
  </Provider>,
