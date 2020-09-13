@@ -18,6 +18,10 @@ import java.io.IOException;
 
 @Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
+    private static final String AUTHENTICATION_MSG = "Cannot set user authentication: {}";
+    private static final String AUT = "Authorization";
+    private static final String BEARER = "Bearer ";
+
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -40,17 +44,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            log.error("Cannot set user authentication: {}", e);
+            log.error(AUTHENTICATION_MSG, e);
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+        String headerAuth = request.getHeader(AUT);
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER)) {
+            return headerAuth.substring(7);
         }
 
         return null;

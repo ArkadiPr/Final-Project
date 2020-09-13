@@ -47,7 +47,7 @@ public class User {
     private List<Task> tasks;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;
 

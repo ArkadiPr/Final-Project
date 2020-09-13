@@ -23,8 +23,7 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
-        Project project=projectService.findById(id);
-        return project;
+        return projectService.findById(id);
     }
 
     @GetMapping("/owners")
@@ -50,13 +49,14 @@ public class ProjectController {
         if (!projectService.existsById(project.getId())) {
             throw new ResourceNotFoundException("Project with id: " + project.getId() + " doesn't exists");
         }
-        List<Task> tasks=project.getTasks();
+        List<Task> tasks = project.getTasks();
         for(Task task : tasks){
             task.setProject(project);
         }
         project.setTasks(tasks);
         return projectService.saveOrUpdate(project);
     }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         projectService.deleteById(id);
