@@ -1,6 +1,5 @@
 package com.geekbrains.finalproject.entities.dtos;
 
-import com.geekbrains.finalproject.entities.Project;
 import com.geekbrains.finalproject.entities.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
