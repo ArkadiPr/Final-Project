@@ -1,9 +1,11 @@
 package com.geekbrains.finalproject.controllers;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.User;
 import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.services.ProjectService;
+import com.geekbrains.finalproject.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectController {
     private ProjectService projectService;
+    private UserService userService;
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
@@ -33,10 +36,11 @@ public class ProjectController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Project createNewProject(@RequestBody Project project) {
+    public Project createNewProject(@RequestBody Project project,Principal user) {
         if (project.getId() != null) {
             project.setId(null);
         }
+        project.setUser(userService.findByUsername(user.getName()).orElse(null));
         return projectService.saveOrUpdate(project);
     }
 
