@@ -19,7 +19,6 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "project")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks;

@@ -1,5 +1,6 @@
 package com.geekbrains.finalproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -43,10 +44,10 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
-
 
     @AllArgsConstructor
     @Getter
