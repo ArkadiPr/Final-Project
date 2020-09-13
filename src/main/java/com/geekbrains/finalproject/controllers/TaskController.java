@@ -51,7 +51,11 @@ public class TaskController {
     public Task modifyTaskAddExecutor(@RequestBody TaskDTO taskDto) {
         User user = userService.findByUsername(taskDto.getUsername()).orElse(null);
         Task task = taskService.findById(taskDto.getId());
-        if(user != null){
+        boolean containsInList = task.getUsers()
+                .stream()
+                .anyMatch(u -> u.getUsername().equals(taskDto.getUsername()));
+        if(user != null && !containsInList){
+
             task.getUsers().add(user);
         }
         return taskService.saveOrUpdate(task);
