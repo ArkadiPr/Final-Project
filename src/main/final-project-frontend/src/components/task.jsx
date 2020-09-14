@@ -21,8 +21,8 @@ const headerStyle = {
 };
 
 const Task = () => {
-    const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const API_URL_COMMENT = 'http://localhost:8188/api/v1/comments/';
+    const API_URL = 'http://localhost:8188/api/v1/tasks/';
     const user = authController.getCurrentUser();
     const taskId = localStorage.getItem('taskId');
     const projectId = localStorage.getItem('projectId');
@@ -134,16 +134,22 @@ const Task = () => {
 
     const removeComment = (e, id) => {
         e.preventDefault();
-        axios.delete(API_URL_COMMENT + id, 
+        axios.delete(API_URL_COMMENT + id,
             {headers: authHeader()})
-            .then(res=>setMessage(res.data));  
+            .then(res=>setMessage(res.data));
             history.push("/task");
-            window.location.reload();           
+            window.location.reload();
     };
 
-    const removeExecutor = (e, id) => {
+    const removeExecutor = (e, username) => {
         e.preventDefault();
-    };    
+        const deletedExecutor = {id: task.id, username: username};
+        axios.delete(API_URL + "executor", deletedExecutor,
+            {headers: authHeader()});
+            //.then(res=>setMessage(res.data));
+        //history.push("/task");
+       // window.location.reload();
+    };
 
     return (
         <div>
@@ -251,26 +257,26 @@ const Task = () => {
                 {task &&
                 task.users.map((item, index) => (
                     <div>
-                        <TextField 
+                        <TextField
                         key={index}
-                        id="filled-read-only-input" 
-                        label="executor" 
-                        value={item.username}  
+                        id="filled-read-only-input"
+                        label="executor"
+                        value={item.username}
                         InputProps={{
                             readOnly: true,
                         }}
                         variant="filled"
                         />
-                        {user.username===owner && 
-                            <IconButton onClick={e=>removeExecutor(e, item.id)}className="delete" aria-label="delete">
-                                <img src={trashImg} alt="" 
+                        {user.username===owner &&
+                            <IconButton onClick={e=>removeExecutor(e, item.username)}className="delete" aria-label="delete">
+                                <img src={trashImg} alt=""
                                         style={{width: 25,
                                         height: 25}}>
                                 </img>
                             </IconButton>
                             }
                     </div>
-                ))}        
+                ))}
             </div>
             <div>
                 {user.username===owner && canAdd===true && <TextField label="executor" 
@@ -281,17 +287,17 @@ const Task = () => {
                 {user.username===owner && canAdd===true && <Button variant="outlined" onClick={addNewExecutor}>Add new executor</Button>}
             </div>
             <br></br>
-            <h5 style={headerStyle}>Comments</h5> 
+            <h5 style={headerStyle}>Comments</h5>
             <div>
-                {task && task.comments.map(item => (          
-                    <div className="comment">   
-                        {user.username===owner && 
+                {task && task.comments.map(item => (
+                    <div className="comment">
+                        {user.username===owner &&
                             <IconButton onClick={e=>removeComment(e, item.id)}className="delete" aria-label="delete">
-                                <img src={trashImg} alt="" 
+                                <img src={trashImg} alt=""
                                         style={{width: 25,
                                         height: 25}}>
                                 </img>
-                            </IconButton>}                  
+                            </IconButton>}
                         <p className="comment-header">From user: {item.fromUser.username}</p>
                         {item.toUser!=='' && <p className="comment-header">To user: {item.toUser}</p>}
                         <p className="comment-body">-{item.text}</p>
@@ -306,7 +312,35 @@ const Task = () => {
                   </div>
                 </div>
             )}
-            <h5 style={headerStyle}>Write comment</h5> 
+            <h5 style={headerStyle}>Write comment</h5>
+            <WriteComment task={task}/>
+            <br></br>
+            <h5 style={headerStyle}>Comments</h5>
+            <div>
+                {task && task.comments.map(item => (
+                    <div className="comment">
+                        {user.username===owner &&
+                            <IconButton onClick={e=>removeComment(e, item.id)}className="delete" aria-label="delete">
+                                <img src={trashImg} alt=""
+                                        style={{width: 25,
+                                        height: 25}}>
+                                </img>
+                            </IconButton>}
+                        <p className="comment-header">From user: {item.fromUser.username}</p>
+                        {item.toUser!=='' && <p className="comment-header">To user: {item.toUser}</p>}
+                        <p className="comment-body">-{item.text}</p>
+                        <p>{item.createdTime}</p>
+                    </div>
+                ))}
+            </div>
+            {message && (
+                <div className="form-group">
+                  <div className="alert alert-success" role="alert">
+                    {message}
+                  </div>
+                </div>
+            )}
+            <h5 style={headerStyle}>Write comment</h5>
             <WriteComment task={task}/>
         </div>
     );

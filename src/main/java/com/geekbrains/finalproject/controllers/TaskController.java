@@ -60,6 +60,14 @@ public class TaskController {
         return taskService.saveOrUpdate(task);
     }
 
+    @DeleteMapping("/executor")
+    public void deleteTaskAddExecutor(@RequestBody TaskDTO taskDto) {
+        User user = userService.findByUsername(taskDto.getUsername()).orElse(null);
+        Task task = taskService.findById(taskDto.getId());
+        task.getUsers().remove(user);
+        taskService.saveOrUpdate(task);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable Long id) {
         taskService.deleteById(id);
