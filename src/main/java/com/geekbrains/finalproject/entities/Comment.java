@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Data
 @Table(name = "comments")
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,6 +26,4 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
-
-
 }

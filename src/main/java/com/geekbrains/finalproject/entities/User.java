@@ -54,6 +54,4 @@ public class User {
     @OneToMany(mappedBy = "fromUser")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Comment> commentsFromUser;
-
-
 }
