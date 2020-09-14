@@ -63,6 +63,6 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public String deleteById(@PathVariable Long id) {
         taskService.deleteById(id);
-        return "Task with id " + id + " was successfully deleted!";
+        return "Task was successfully deleted! Update this page!";
     }
 }
