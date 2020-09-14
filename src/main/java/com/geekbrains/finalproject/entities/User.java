@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
-@NoArgsConstructor
+
 @Entity
 @Getter
 @Setter
