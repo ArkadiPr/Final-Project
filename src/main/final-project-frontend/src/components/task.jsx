@@ -64,8 +64,16 @@ const Task = () => {
                     setTask(res.data);
                     setTitle(res.data.title);
                     setDescription(res.data.description);
-                    setStatus(res.data.status);
-                    setPriority(res.data.priority);
+                    for (let i = 0; i < statusArray.length; i++) {
+                        if(statusArray[i].value === res.data.status) {
+                            setStatus(statusArray[i].label);
+                        }
+                    }
+                    for (let i = 0; i < priorityArray.length; i++) {
+                        if(priorityArray[i].value === res.data.priority) {
+                            setPriority(priorityArray[i].label);
+                        }
+                    }
                     res.data.users.map(u => {
                         if(u.username === user.username){
                         setRole(true);

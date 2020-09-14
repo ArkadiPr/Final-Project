@@ -5,6 +5,7 @@ import axios from 'axios';
 import authHeader from '../api/authHeader';
 import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
+import history from '../history';
 
 const WriteComment = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/comments/';
@@ -20,6 +21,8 @@ const WriteComment = (props) => {
             {headers: authHeader()})
             .then(res => { 
                 console.log(res);
+                history.push("/task");
+                window.location.reload();
         });    
     };
 
