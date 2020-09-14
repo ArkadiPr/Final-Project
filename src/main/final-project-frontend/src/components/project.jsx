@@ -5,13 +5,25 @@ import authHeader from '../api/authHeader';
 import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
-const Project = (props) =>{
+import trashImg from '../trash.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const Project = () =>{
     const API_URL = 'http://localhost:8188/api/v1/projects/';
+    const API_URL_TASK = 'http://localhost:8188/api/v1/tasks/';
     const [user, setUser] = useState(authController.getCurrentUser());
     const [project, setProject] = useState(null);
     const [canEdit, setValue] = useState(false);
     const projectId = localStorage.getItem('projectId');
     const [projectName, setName] = useState('');
+    const headerStyle = {
+        color: "white",
+        backgroundColor: "DodgerBlue",
+        padding: "10px",
+        fontFamily: "Arial",
+        textAlign: "center"
+    };
+
     useEffect(()=>{
         if(user===null) {
             history.push("/");
@@ -67,6 +79,15 @@ const Project = (props) =>{
         setValue(!canEdit);
     };
 
+    const removeTask = (e, id) => {
+        e.preventDefault();
+        axios.delete(API_URL_TASK + id, 
+            {headers: authHeader()})
+            .then(res=>console.log(res.data));
+        history.push("/project");
+        window.location.reload();    
+    };
+
     return (
         <div>
             <h3>Project</h3>
@@ -108,13 +129,14 @@ const Project = (props) =>{
                     }}
                     variant="filled"/>}
             </div>
+                    <br></br>
             <div>
-                <label>Tasks:</label> 
+            <h5 style={headerStyle}>Tasks:</h5> 
                 <ul>
                     {project && project.tasks.map(item => (
+                        <div>
                         <li>
                             <Button onClick={e=>switchToTask(e, item.id)}>
-                                {/* {item.title} : {item.priority} : {item.status} */}
                                 <TextField id="filled-read-only-input" 
                                     label="title" 
                                     value={item.title}  
@@ -144,7 +166,17 @@ const Project = (props) =>{
                                     }}
                                     variant="filled"/>    
                             </Button>
+                            {project && project.user.username === user.username && <Button onClick={e => removeTask(e, item.id)}>
+                                <img src={trashImg} alt="" 
+                                    style={{width: 40,
+                                    height: 40}}>
+                                </img>
+                            </Button>}
                         </li>
+                       
+                        </div>
+                         
+                        
                     ))}
                 </ul>
                 {project && project.user.username === user.username && <Button onClick={switchToCreateTask}>Add new task</Button>}

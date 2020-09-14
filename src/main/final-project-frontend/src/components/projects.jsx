@@ -4,13 +4,16 @@ import authController from '../api/authController';
 import history from '../history';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
+import trashImg from '../trash.png';
+import { useAlert } from "react-alert";
 
-const Projects = (props) => {
+const Projects = () => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
     const user = authController.getCurrentUser();
     const [ownerProjects, setOwnerProjects] = useState([]);
     const [executorProjects, setExecutorProjects] = useState([]);
     const [projectsType, setProjectsType] = useState(true);
+    const alert = useAlert();
 
     useEffect(() => {
         const CancelToken = axios.CancelToken;
@@ -35,7 +38,7 @@ const Projects = (props) => {
     };
 
     const getExecutorProjects = (source) => {
-        return axios.get(API_URL+ 'executors/', 
+        return axios.get(API_URL + 'executors/', 
                 {headers: authHeader(), cancelToken: source.token})
                 .then(res => {
                     setExecutorProjects(res.data);
@@ -65,6 +68,25 @@ const Projects = (props) => {
         window.location.reload();
     };
 
+    const removeProject = (e, id) => {
+        e.preventDefault();
+        alert.show("Are you sure you want to delete this project?", {
+            title: "Delete project",
+            actions: [ 
+              {
+               copy: "Delete",
+               onClick: () => {
+                axios.delete(API_URL+id, 
+                    {headers: authHeader()})
+                    .then(res=>console.log(res.data));
+                history.push("/projects");
+                window.location.reload();    
+              }
+            }
+            ]});
+        
+    };
+
     const logout = (e) => {
         e.preventDefault();
         authController.logout();
@@ -84,6 +106,12 @@ const Projects = (props) => {
                { projectsType === true && ownerProjects.map(item => (
                     <li>
                         <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
+                        <Button onClick={e => removeProject(e, item.id)}>
+                            <img src={trashImg} alt="" 
+                                style={{width: 25,
+                                height: 25}}>
+                            </img>
+                        </Button>
                     </li>
                 )) }
                 { projectsType === false && executorProjects.map(item => (
