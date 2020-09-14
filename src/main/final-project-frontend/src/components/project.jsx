@@ -179,7 +179,7 @@ const Project = () =>{
                         
                     ))}
                 </ul>
-                {project && project.user.username === user.username && <Button onClick={switchToCreateTask}>Add new task</Button>}
+                {project && project.user.username === user.username && <Button variant="outlined" onClick={switchToCreateTask}>Add new task</Button>}
             </div>
         </div>
     );

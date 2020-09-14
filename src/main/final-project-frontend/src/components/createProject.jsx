@@ -48,7 +48,7 @@ const CreateProject = () => {
                     <TextField id="filled-basic" label="Filled" variant="filled" onChange={e=>setProjectName(e.target.value)} ></TextField>
                 </div>
                 <div>
-                    <Button onClick={createNewProject}>Create project</Button>
+                    <Button variant="outlined" color="primary" onClick={createNewProject}>Create project</Button>
                 </div>
         </div>
     );
