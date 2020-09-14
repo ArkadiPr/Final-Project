@@ -23,12 +23,14 @@ public class TaskMapper {
         Task task = new Task();
         task.setUsers(new ArrayList<>());
         task.getUsers().add(userService.findByUsername(user.getName()).orElse(null));
-        return getTask(taskModifyDTO, task);
+        return convertToTask(taskModifyDTO, task, true);
     }
 
-    private Task getTask(TaskModifyDTO taskModifyDTO, Task task) {
+    private Task convertToTask(TaskModifyDTO taskModifyDTO, Task task, boolean isCreate) {
         task.setProject(projectService.findById(taskModifyDTO.getProjectId()));
-        task.setCreatedTime(taskModifyDTO.getCreatedTime());
+        if(isCreate) {
+            task.setCreatedTime(taskModifyDTO.getCreatedTime());
+        }
         task.setDescription(taskModifyDTO.getDescription());
         task.setPriority(taskModifyDTO.getPriority());
         task.setStatus(taskModifyDTO.getStatus());
@@ -41,6 +43,6 @@ public class TaskMapper {
             throw new ResourceNotFoundException("Task with id: " + taskModifyDTO.getId() + " doesn't exists");
         }
         Task task = taskService.findById(taskModifyDTO.getId());
-        return getTask(taskModifyDTO, task);
+        return convertToTask(taskModifyDTO, task, false);
     }
 }
