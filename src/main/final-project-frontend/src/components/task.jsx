@@ -6,6 +6,18 @@ import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
 import MenuItem from '@material-ui/core/MenuItem';
+import WriteComment from './writeComment';
+import IconButton from '@material-ui/core/IconButton';
+import './commentStyle.scss';
+import trashImg from '../trash.png';
+
+const headerStyle = {
+    color: "white",
+    backgroundColor: "DodgerBlue",
+    padding: "10px",
+    fontFamily: "Arial",
+    textAlign: "center"
+};
 
 const Task = () => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
@@ -204,9 +216,9 @@ const Task = () => {
                  </TextField>}
             </div>
             <div>
-                {task && canEdit===false && role===true && <Button onClick={editData}>Edit</Button>}
-                {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
-                {canEdit === true && <Button onClick={editData}>Cancel</Button>}
+                {task && canEdit===false && role===true && <Button variant="outlined" onClick={editData}>Edit</Button>}
+                {canEdit === true && <Button variant="outlined" onClick={updateTask}>Apply</Button>}
+                {canEdit === true && <Button  variant="outlined" onClick={editData}>Cancel</Button>}
             </div>
             <div>
                 <label>Executors:</label>
@@ -224,17 +236,38 @@ const Task = () => {
                     }}
                     variant="filled"
                     />
-                  ))
-                }        
+                ))}        
             </div>
             <div>
                 {user.username===owner && canAdd===true && <TextField label="executor" 
                 value={executor} 
                 onChange={e=>setExecutor(e.target.value)} 
                 variant="outlined"/>}
-                {user.username===owner && canAdd===false && <Button onClick={editAdd}>Add executor</Button>}
-                {user.username===owner && canAdd===true && <Button onClick={addNewExecutor}>Add new executor</Button>}
+                {user.username===owner && canAdd===false && <Button variant="outlined" onClick={editAdd}>Add executor</Button>}
+                {user.username===owner && canAdd===true && <Button variant="outlined" onClick={addNewExecutor}>Add new executor</Button>}
             </div>
+            <br></br>
+            <h5 style={headerStyle}>Comments</h5> 
+            <div>
+                {task && task.comments.map(item => (
+                
+                    <div className="comment">   
+                        {user.username===owner && 
+                            <IconButton className="delete" aria-label="delete">
+                                <img src={trashImg} alt="" 
+                                        style={{width: 25,
+                                        height: 25}}>
+                                </img>
+                            </IconButton>}                  
+                        <p className="comment-header">From user: {item.fromUser.username}</p>
+                        {item.toUser!=='' && <p className="comment-header">To user: {item.toUser}</p>}
+                        <p className="comment-body">-{item.text}</p>
+                        <p>{item.createdTime}</p>
+                    </div>
+                ))}
+            </div>
+            <h5 style={headerStyle}>Write comment</h5> 
+            <WriteComment task={task}/>
         </div>
     );
 }
