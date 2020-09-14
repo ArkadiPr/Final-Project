@@ -35,4 +35,10 @@ public class CommentController {
     public Comment getCommentById(@PathVariable Long id) {
         return commentService.findById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteById(@PathVariable Long id) {
+        commentService.deleteById(id);
+        return "Comment was deleted successfully!";
+    }
 }
