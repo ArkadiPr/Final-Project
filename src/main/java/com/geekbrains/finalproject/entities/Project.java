@@ -24,8 +24,7 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Task> tasks;
 
     @ManyToOne

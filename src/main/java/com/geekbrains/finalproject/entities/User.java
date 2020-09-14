@@ -47,12 +47,10 @@ public class User {
     private List<Task> tasks;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "fromUser")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.REMOVE)
     private List<Comment> commentsFromUser;
 }
