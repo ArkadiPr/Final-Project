@@ -40,7 +40,7 @@ public class ProjectController {
         if (project.getId() != null) {
             project.setId(null);
         }
-        project.setOwner(userService.findByUsername(user.getName()).orElse(null));
+        project.setUser(userService.findByUsername(user.getName()).orElse(null));
         return projectService.saveOrUpdate(project);
     }
 

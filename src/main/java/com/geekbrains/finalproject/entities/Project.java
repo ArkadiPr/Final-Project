@@ -30,5 +30,5 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User owner;
+    private User user;
 }
