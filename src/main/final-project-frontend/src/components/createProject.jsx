@@ -2,49 +2,56 @@ import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
-import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
-
-const CreateProject = (props) => {
+import history from '../history';
+import authController from '../api/authController';
+const CreateProject = () => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
+    const [projectName, setProjectName] = useState('');
     const user = authController.getCurrentUser();
-    const {setPage, setProjectId} = props;
-    const {projectName, setProjectName} = useState('');
-
-    useEffect(()=>{
-        console.log(user);
+    
+    useEffect(()=>{ 
+        if(user===null) {
+            history.push("/");
+            window.location.reload();
+        }
     },[]);
 
     const switchToProjects = (e) => {
         e.preventDefault();
-        setPage(1);
+        history.push("/projects");
+        window.location.reload();
     };
 
-    const openNewProject = (e) => {
+    const createNewProject = (e) => {
         e.preventDefault();
-        const newProject = {id: null, projectName: projectName, user: user, tasks: null};
-        return axios.post(API_URL, newProject, 
-            {headers: authHeader()})
-            .then(res => { 
-                setProjectId(res.id);
-                setPage(2);
-        });
+        if (projectName.trim().length) {
+            const newProject = {projectName: projectName};
+            axios.post(API_URL, newProject, 
+                {headers: authHeader()})
+                .then(res => { 
+                    console.log(res.data);
+            });
+            history.push("/projects");
+            window.location.reload(); 
+        }   
     };
-
+    
     return (
         <div>
             <h3>Create Project</h3>
+            <div>
             <Button onClick={switchToProjects}>Projects</Button>
-            <form onSubmit={openNewProject}>
+            </div>
                 <label>Project name:</label>
                 <div>
-                    <TextField id="filled-basic" label="Filled" variant="filled" onChange={e=>setProjectName(e.target.value)} />
+                    <TextField id="filled-basic" label="Filled" variant="filled" onChange={e=>setProjectName(e.target.value)} ></TextField>
                 </div>
                 <div>
-                    <Button type="submit">Create</Button>
+                    <Button onClick={createNewProject}>Create project</Button>
                 </div>
-            </form>
         </div>
     );
 }
+
 export default CreateProject;

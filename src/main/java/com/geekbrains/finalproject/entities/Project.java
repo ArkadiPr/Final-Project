@@ -1,16 +1,21 @@
 package com.geekbrains.finalproject.entities;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "projects")
 public class Project {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -19,7 +24,7 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project",fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Task> tasks;
 

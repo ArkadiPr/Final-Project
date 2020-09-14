@@ -1,6 +1,7 @@
 package com.geekbrains.finalproject.repositories;
 
 import com.geekbrains.finalproject.entities.Project;
+import com.geekbrains.finalproject.entities.dtos.ProjectDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,12 +12,11 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    @Query(value = "select * from projects where user_id=:id", nativeQuery = true)
-    List<Project> findAllByOwnerId(@Param("id")Long id);
+    @Query(value = "select new com.geekbrains.finalproject.entities.dtos.ProjectDTO(p.id, p.projectName) from Project p where p.user.username=:username")
+    List<ProjectDTO> findAllByOwnerId(@Param("username") String username);
 
-    @Query(value = "select distinct * from projects inner join tasks on tasks.project_id = projects.id " +
-    "inner join users_tasks on tasks.id = users_tasks.task_id" +
-    " inner join users on users.id = users_tasks.user_id where username=:username" , nativeQuery = true)
-    List<Project> findAllProjectsByExecutorsName(@Param("username")String username);
-
+    @Query(value = "select distinct new com.geekbrains.finalproject.entities.dtos.ProjectDTO(p.id, p.projectName)" +
+            " from Project p inner join Task t on t.project.id = p.id " +
+    "inner join t.users u where u.username=:username")
+    List<ProjectDTO> findAllProjectsByExecutorsName(@Param("username") String username);
 }

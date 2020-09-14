@@ -4,73 +4,94 @@ import authController from '../api/authController';
 import history from '../history';
 import axios from 'axios';
 import authHeader from '../api/authHeader';
+
 const Projects = (props) => {
     const API_URL = 'http://localhost:8188/api/v1/projects/';
-
     const user = authController.getCurrentUser();
-    const [projects, setProjects] = useState([]);
-    const [isOwner, setRole] = useState(true);
-    const {setPage, setProjectId} = props
-
+    const [ownerProjects, setOwnerProjects] = useState([]);
+    const [executorProjects, setExecutorProjects] = useState([]);
+    const [projectsType, setProjectsType] = useState(true);
 
     useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
         if(user === null) {
           history.push("/");
           window.location.reload();
         } 
         else {
-            if(isOwner === true) {
-                return axios.get(API_URL, 
-                {headers: authHeader()})
-                .then(res => { 
-                    console.log(res);
-                    setProjects(res.data);
-                });
-            } else {  
-                return axios.get(API_URL+ "executor/" + user.id, 
-                {headers: authHeader()})
-                .then(res => {
-                    setProjects(res.data);
-                });     
-            }
-        }
-        console.log(user);
+            getOwnerProjects(source);
+            getExecutorProjects(source);
+        }    
     },[]);
+
+    const getOwnerProjects = (source) => {
+        return axios.get(API_URL + 'owners/', 
+        {headers: authHeader(), cancelToken: source.token})
+        .then(res => { 
+            console.log(res);
+            setOwnerProjects(res.data);
+        });
+    };
+
+    const getExecutorProjects = (source) => {
+        return axios.get(API_URL+ 'executors/', 
+                {headers: authHeader(), cancelToken: source.token})
+                .then(res => {
+                    setExecutorProjects(res.data);
+                });     
+    };
 
     const switchToOwner = (e) => {
         e.preventDefault();
-        setRole(true);
+        setProjectsType(true);
     };
 
     const switchToExecutor = (e) => {
         e.preventDefault();
-        setRole(false);
+        setProjectsType(false);
     };
 
     const switchToCreateProject = (e) => {
         e.preventDefault();
-        setProjectId(-1);
-        setPage(3);
+        history.push("/create-project");
+        window.location.reload();
     };
 
     const openProject = (e, id) => {
         e.preventDefault();
-        setProjectId(id);
-        setPage(2);
+        localStorage.setItem('projectId', id);
+        history.push("/project");
+        window.location.reload();
     };
 
-    return (
+    const logout = (e) => {
+        e.preventDefault();
+        authController.logout();
+        history.push("/");
+        window.location.reload();
+    };
+
+    return (    
+        <div>
+            <Button onClick={switchToCreateProject}>Create project</Button>
+            <Button onClick={logout}>Logout</Button>
         <div>
             <Button onClick={switchToOwner}>Owner</Button>
             <Button onClick={switchToExecutor}>Executor</Button>
-            <Button onClick={switchToCreateProject}>Create project</Button>
-            {/* <ul>
-                {projects.map(item => (
+        </div>
+        <ul>
+               { projectsType === true && ownerProjects.map(item => (
                     <li>
                         <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
                     </li>
-                ))}
-            </ul> */}
+                )) }
+                { projectsType === false && executorProjects.map(item => (
+                    <li>
+                        <Button onClick={e => openProject(e, item.id)}>{item.projectName}</Button>
+                    </li>
+                )) }
+        </ul>
         </div>
     );
 }
