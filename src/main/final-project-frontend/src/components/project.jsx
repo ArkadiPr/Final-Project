@@ -16,6 +16,26 @@ const Project = () =>{
     const [canEdit, setValue] = useState(false);
     const projectId = localStorage.getItem('projectId');
     const [projectName, setName] = useState('');
+    const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('');
+    const [message, setMessage] = useState('');
+    const statusArray = [
+        {value : 'IS_CREATED', label : 'Создана'},
+        {value : 'IN_PROGRESS', label : 'В работе'},
+        {value : 'ON_CHECK', label : 'Передана на проверку'},
+        {value : 'ON_REWORK', label : 'Возвращена на доработку'},
+        {value : 'IS_DONE', label : 'Завершена'},
+        {value : 'IS_CANCELED', label : 'Отменена'}
+    ];
+    const priorityArray = [
+        {value : 'IN_THE_PLAN', label : 'В планах'},
+        {value : 'VERY_LOW', label : 'Очень низкий'},
+        {value : 'LOW', label : 'Низкий'},
+        {value : 'MIDDLE', label : 'Средний'},
+        {value : 'HIGH', label : 'Высокий'},
+        {value : 'VERY_HIGH', label : 'Очень высокий'}
+    ];
+
     const headerStyle = {
         color: "white",
         backgroundColor: "DodgerBlue",
@@ -32,10 +52,21 @@ const Project = () =>{
         else {
             return axios.get(API_URL + projectId, 
                 {headers: authHeader()})
-                .then(res => { 
-                    console.log(res);
+                .then(res => {
                     setProject(res.data);
                     setName(res.data.projectName);
+                    for(let j= 0; j < res.data.tasks.length; j++) {
+                        for (let i = 0; i < statusArray.length; i++) {
+                            if(statusArray[i].value === res.data.tasks[j].status) {
+                                setStatus(statusArray[i].label);
+                            }
+                        }
+                        for (let i = 0; i < priorityArray.length; i++) {
+                            if(priorityArray[i].value === res.data.tasks[j].priority) {
+                                setPriority(priorityArray[i].label);
+                            }
+                        }
+                    }
             });
         }   
     },[2]);
@@ -83,9 +114,7 @@ const Project = () =>{
         e.preventDefault();
         axios.delete(API_URL_TASK + id, 
             {headers: authHeader()})
-            .then(res=>console.log(res.data));
-        history.push("/project");
-        window.location.reload();    
+            .then(res=>setMessage(res.data));          
     };
 
     return (
@@ -146,14 +175,14 @@ const Project = () =>{
                                     variant="filled"/>
                                 <TextField id="filled-read-only-input" 
                                     label="priority" 
-                                    value={item.priority}  
+                                    value={priority}  
                                     InputProps={{
                                         readOnly: true,
                                     }}
                                 variant="filled"/>
                                 <TextField id="filled-read-only-input" 
                                     label="status" 
-                                    value={item.status}  
+                                    value={status}  
                                     InputProps={{
                                         readOnly: true,
                                     }}
@@ -179,7 +208,15 @@ const Project = () =>{
                         
                     ))}
                 </ul>
-                {project && project.user.username === user.username && <Button onClick={switchToCreateTask}>Add new task</Button>}
+                {project && project.user.username === user.username && <Button variant="outlined" onClick={switchToCreateTask}>Add new task</Button>}
+
+                {message && (
+                <div className="form-group">
+                  <div className="alert alert-success" role="alert">
+                    {message}
+                  </div>
+                </div>
+                )}
             </div>
         </div>
     );

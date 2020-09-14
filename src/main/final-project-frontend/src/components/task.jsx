@@ -6,9 +6,23 @@ import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
 import MenuItem from '@material-ui/core/MenuItem';
+import WriteComment from './writeComment';
+import IconButton from '@material-ui/core/IconButton';
+import './commentStyle.scss';
+import trashImg from '../trash.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const headerStyle = {
+    color: "white",
+    backgroundColor: "DodgerBlue",
+    padding: "10px",
+    fontFamily: "Arial",
+    textAlign: "center"
+};
 
 const Task = () => {
     const API_URL = 'http://localhost:8188/api/v1/tasks/';
+    const API_URL_COMMENT = 'http://localhost:8188/api/v1/comments/';
     const user = authController.getCurrentUser();
     const taskId = localStorage.getItem('taskId');
     const projectId = localStorage.getItem('projectId');
@@ -22,6 +36,7 @@ const Task = () => {
     const [executor, setExecutor] = useState('');
     const [canEdit, setCanEdit] = useState(false);
     const [canAdd, setCanAdd] = useState(false);
+    const [message, setMessage] = useState('');
     const statusArray = [
         {value : 'IS_CREATED', label : 'Создана'},
         {value : 'IN_PROGRESS', label : 'В работе'},
@@ -52,8 +67,16 @@ const Task = () => {
                     setTask(res.data);
                     setTitle(res.data.title);
                     setDescription(res.data.description);
-                    setStatus(res.data.status);
-                    setPriority(res.data.priority);
+                    for (let i = 0; i < statusArray.length; i++) {
+                        if(statusArray[i].value === res.data.status) {
+                            setStatus(statusArray[i].label);
+                        }
+                    }
+                    for (let i = 0; i < priorityArray.length; i++) {
+                        if(priorityArray[i].value === res.data.priority) {
+                            setPriority(priorityArray[i].label);
+                        }
+                    }
                     res.data.users.map(u => {
                         if(u.username === user.username){
                         setRole(true);
@@ -108,6 +131,19 @@ const Task = () => {
         setCanAdd(!canAdd);
         window.location.reload();
     };
+
+    const removeComment = (e, id) => {
+        e.preventDefault();
+        axios.delete(API_URL_COMMENT + id, 
+            {headers: authHeader()})
+            .then(res=>setMessage(res.data));  
+            history.push("/task");
+            window.location.reload();           
+    };
+
+    const removeExecutor = (e, id) => {
+        e.preventDefault();
+    };    
 
     return (
         <div>
@@ -204,9 +240,9 @@ const Task = () => {
                  </TextField>}
             </div>
             <div>
-                {task && canEdit===false && role===true && <Button onClick={editData}>Edit</Button>}
-                {canEdit === true && <Button onClick={updateTask}>Apply</Button>}
-                {canEdit === true && <Button onClick={editData}>Cancel</Button>}
+                {task && canEdit===false && role===true && <Button variant="outlined" onClick={editData}>Edit</Button>}
+                {canEdit === true && <Button variant="outlined" onClick={updateTask}>Apply</Button>}
+                {canEdit === true && <Button  variant="outlined" onClick={editData}>Cancel</Button>}
             </div>
             <div>
                 <label>Executors:</label>
@@ -214,27 +250,64 @@ const Task = () => {
             <div>    
                 {task &&
                 task.users.map((item, index) => (
-                    <TextField 
-                    key={index}
-                    id="filled-read-only-input" 
-                    label="executor" 
-                    value={item.username}  
-                    InputProps={{
-                        readOnly: true,
-                    }}
-                    variant="filled"
-                    />
-                  ))
-                }        
+                    <div>
+                        <TextField 
+                        key={index}
+                        id="filled-read-only-input" 
+                        label="executor" 
+                        value={item.username}  
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        variant="filled"
+                        />
+                        {user.username===owner && 
+                            <IconButton onClick={e=>removeExecutor(e, item.id)}className="delete" aria-label="delete">
+                                <img src={trashImg} alt="" 
+                                        style={{width: 25,
+                                        height: 25}}>
+                                </img>
+                            </IconButton>
+                            }
+                    </div>
+                ))}        
             </div>
             <div>
                 {user.username===owner && canAdd===true && <TextField label="executor" 
                 value={executor} 
                 onChange={e=>setExecutor(e.target.value)} 
                 variant="outlined"/>}
-                {user.username===owner && canAdd===false && <Button onClick={editAdd}>Add executor</Button>}
-                {user.username===owner && canAdd===true && <Button onClick={addNewExecutor}>Add new executor</Button>}
+                {user.username===owner && canAdd===false && <Button variant="outlined" onClick={editAdd}>Add executor</Button>}
+                {user.username===owner && canAdd===true && <Button variant="outlined" onClick={addNewExecutor}>Add new executor</Button>}
             </div>
+            <br></br>
+            <h5 style={headerStyle}>Comments</h5> 
+            <div>
+                {task && task.comments.map(item => (          
+                    <div className="comment">   
+                        {user.username===owner && 
+                            <IconButton onClick={e=>removeComment(e, item.id)}className="delete" aria-label="delete">
+                                <img src={trashImg} alt="" 
+                                        style={{width: 25,
+                                        height: 25}}>
+                                </img>
+                            </IconButton>}                  
+                        <p className="comment-header">From user: {item.fromUser.username}</p>
+                        {item.toUser!=='' && <p className="comment-header">To user: {item.toUser}</p>}
+                        <p className="comment-body">-{item.text}</p>
+                        <p>{item.createdTime}</p>
+                    </div>
+                ))}
+            </div>
+            {message && (
+                <div className="form-group">
+                  <div className="alert alert-success" role="alert">
+                    {message}
+                  </div>
+                </div>
+            )}
+            <h5 style={headerStyle}>Write comment</h5> 
+            <WriteComment task={task}/>
         </div>
     );
 }

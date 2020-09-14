@@ -133,7 +133,7 @@ const CreateTask = () => {
                 </TextField>
             </div>
             <div>
-                <Button onClick={createNewTask}>Create task</Button>
+                <Button variant="outlined" onClick={createNewTask}>Create task</Button>
             </div>
         </div>
     );

@@ -76,9 +76,7 @@ const Projects = () => {
               {
                copy: "Delete",
                onClick: () => {
-                axios.delete(API_URL+id, 
-                    {headers: authHeader()})
-                    .then(res=>console.log(res.data));
+                axios.delete(API_URL+id, {headers: authHeader()});
                 history.push("/projects");
                 window.location.reload();    
               }

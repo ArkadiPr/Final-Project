@@ -11,6 +11,7 @@
     "bootstrap": "^4.5.2",
     "easy-react-form": "^1.1.1",
     "formik": "^2.1.5",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-alert": "^7.0.2",
     "react-alert-template-mui": "^1.0.7",

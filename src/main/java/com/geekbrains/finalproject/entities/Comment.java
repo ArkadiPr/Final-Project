@@ -1,5 +1,6 @@
 package com.geekbrains.finalproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,6 +23,7 @@ public class Comment {
     @Column(name = "to_user")
     private String toUser;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
