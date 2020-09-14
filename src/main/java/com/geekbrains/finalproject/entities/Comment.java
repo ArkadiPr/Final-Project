@@ -1,8 +1,10 @@
 package com.geekbrains.finalproject.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -26,4 +28,8 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdTime;
 }

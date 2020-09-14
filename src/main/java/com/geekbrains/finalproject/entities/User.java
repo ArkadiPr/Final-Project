@@ -51,6 +51,7 @@ public class User {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Project> projects;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "fromUser")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Comment> commentsFromUser;
