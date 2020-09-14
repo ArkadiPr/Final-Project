@@ -23,7 +23,7 @@ const Task = () => {
     const [canEdit, setCanEdit] = useState(false);
     const [canAdd, setCanAdd] = useState(false);
     const statusArray = [
-        {value : 'IS_CREATE', label : 'Создана'},
+        {value : 'IS_CREATED', label : 'Создана'},
         {value : 'IN_PROGRESS', label : 'В работе'},
         {value : 'ON_CHECK', label : 'Передана на проверку'},
         {value : 'ON_REWORK', label : 'Возвращена на доработку'},
@@ -31,7 +31,7 @@ const Task = () => {
         {value : 'IS_CANCELED', label : 'Отменена'}
     ];
     const priorityArray = [
-        {value : 'IN_THE_PLANS', label : 'В планах'},
+        {value : 'IN_THE_PLAN', label : 'В планах'},
         {value : 'VERY_LOW', label : 'Очень низкий'},
         {value : 'LOW', label : 'Низкий'},
         {value : 'MIDDLE', label : 'Средний'},

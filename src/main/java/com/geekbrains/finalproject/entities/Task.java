@@ -59,7 +59,7 @@ public class Task {
     @AllArgsConstructor
     @Getter
     public enum Status {
-        IS_CREATE("Создана"),
+        IS_CREATED("Создана"),
         IN_PROGRESS("В работе"),
         ON_CHECK("Передана на проверку"),
         ON_REWORK("Возвращена на доработку"),
@@ -72,7 +72,7 @@ public class Task {
     @AllArgsConstructor
     @Getter
     public enum Priority {
-        IN_THE_PLANS("В планах"),
+        IN_THE_PLAN("В планах"),
         VERY_LOW("Очень низкий"),
         LOW("Низкий"),
         MIDDLE("Средний"),

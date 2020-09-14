@@ -25,7 +25,7 @@ const CreateTask = () => {
     },[]);
 
     const statusArray = [
-        {value : 'IS_CREATE', label : 'Создана'},
+        {value : 'IS_CREATED', label : 'Создана'},
         {value : 'IN_PROGRESS', label : 'В работе'},
         {value : 'ON_CHECK', label : 'Передана на проверку'},
         {value : 'ON_REWORK', label : 'Возвращена на доработку'},
@@ -34,7 +34,7 @@ const CreateTask = () => {
     ];
 
     const priorityArray = [
-        {value : 'IN_THE_PLANS', label : 'В планах'},
+        {value : 'IN_THE_PLAN', label : 'В планах'},
         {value : 'VERY_LOW', label : 'Очень низкий'},
         {value : 'LOW', label : 'Низкий'},
         {value : 'MIDDLE', label : 'Средний'},
@@ -59,10 +59,10 @@ const CreateTask = () => {
         console.log(status);
         if (title.trim().length && description.trim().length) {
             if (status === '') {
-                setStatus('IS_CREATE');
+                setStatus('IS_CREATED');
             }
             if (priority === '') {
-                setPriority('IN_THE_PLANS');
+                setPriority('IN_THE_PLAN');
             }
             const newTask = {
                 title: title, 
