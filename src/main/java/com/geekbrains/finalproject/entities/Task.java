@@ -51,8 +51,7 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "task")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
 
