@@ -2,6 +2,7 @@ package com.geekbrains.finalproject.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -50,10 +51,14 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
+
     @AllArgsConstructor
     @Getter
     public enum Status {
-        IS_CREATE("Создана"),
+        IS_CREATED("Создана"),
         IN_PROGRESS("В работе"),
         ON_CHECK("Передана на проверку"),
         ON_REWORK("Возвращена на доработку"),
@@ -66,7 +71,7 @@ public class Task {
     @AllArgsConstructor
     @Getter
     public enum Priority {
-        IN_THE_PLANS("В планах"),
+        IN_THE_PLAN("В планах"),
         VERY_LOW("Очень низкий"),
         LOW("Низкий"),
         MIDDLE("Средний"),

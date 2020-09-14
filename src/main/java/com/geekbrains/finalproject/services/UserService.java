@@ -5,12 +5,9 @@ import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

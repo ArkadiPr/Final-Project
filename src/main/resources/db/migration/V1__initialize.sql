@@ -46,13 +46,13 @@ project_id bigint references projects(id),
 created_at TIMESTAMP DEFAULT current_timestamp
 );
 
-insert into tasks(title, description, status, priority ,project_id)
-values ('task1', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
-       ('task2', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 1),
-       ('task3', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 2),
-       ('task4', 'description', 'IS_CREATE' , ' IN_THE_PLANS' , 3);
+insert into tasks (title, description, status, priority ,project_id)
+values ('task1', 'description', 'IS_CREATED' , ' IN_THE_PLAN' , 1),
+       ('task2', 'description', 'IS_CREATED' , ' IN_THE_PLAN' , 1),
+       ('task3', 'description', 'IS_CREATED' , ' IN_THE_PLAN' , 2),
+       ('task4', 'description', 'IS_CREATED' , ' IN_THE_PLAN' , 3);
 
-create table users_tasks(user_id bigint references users(id), task_id bigint references tasks(id));
+create table users_tasks (user_id bigint references users(id), task_id bigint references tasks(id));
 
 insert into users_tasks(user_id, task_id)
 values (1, 2),
@@ -61,3 +61,12 @@ values (1, 2),
        (2, 4),
        (1,1),
        (3,4);
+
+create table comments (
+id bigserial primary key,
+user_id bigint references users(id),
+to_user varchar(255),
+task_id bigint references tasks(id),
+text text,
+created_at TIMESTAMP DEFAULT current_timestamp
+);

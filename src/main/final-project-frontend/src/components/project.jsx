@@ -5,13 +5,45 @@ import authHeader from '../api/authHeader';
 import authController from '../api/authController';
 import TextField from '@material-ui/core/TextField';
 import history from '../history';
-const Project = (props) =>{
+import trashImg from '../trash.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const Project = () =>{
     const API_URL = 'http://localhost:8188/api/v1/projects/';
+    const API_URL_TASK = 'http://localhost:8188/api/v1/tasks/';
     const [user, setUser] = useState(authController.getCurrentUser());
     const [project, setProject] = useState(null);
     const [canEdit, setValue] = useState(false);
     const projectId = localStorage.getItem('projectId');
     const [projectName, setName] = useState('');
+    const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('');
+    const [message, setMessage] = useState('');
+    const statusArray = [
+        {value : 'IS_CREATED', label : 'Создана'},
+        {value : 'IN_PROGRESS', label : 'В работе'},
+        {value : 'ON_CHECK', label : 'Передана на проверку'},
+        {value : 'ON_REWORK', label : 'Возвращена на доработку'},
+        {value : 'IS_DONE', label : 'Завершена'},
+        {value : 'IS_CANCELED', label : 'Отменена'}
+    ];
+    const priorityArray = [
+        {value : 'IN_THE_PLAN', label : 'В планах'},
+        {value : 'VERY_LOW', label : 'Очень низкий'},
+        {value : 'LOW', label : 'Низкий'},
+        {value : 'MIDDLE', label : 'Средний'},
+        {value : 'HIGH', label : 'Высокий'},
+        {value : 'VERY_HIGH', label : 'Очень высокий'}
+    ];
+
+    const headerStyle = {
+        color: "white",
+        backgroundColor: "DodgerBlue",
+        padding: "10px",
+        fontFamily: "Arial",
+        textAlign: "center"
+    };
+
     useEffect(()=>{
         if(user===null) {
             history.push("/");
@@ -20,10 +52,21 @@ const Project = (props) =>{
         else {
             return axios.get(API_URL + projectId, 
                 {headers: authHeader()})
-                .then(res => { 
-                    console.log(res);
+                .then(res => {
                     setProject(res.data);
                     setName(res.data.projectName);
+                    for(let j= 0; j < res.data.tasks.length; j++) {
+                        for (let i = 0; i < statusArray.length; i++) {
+                            if(statusArray[i].value === res.data.tasks[j].status) {
+                                setStatus(statusArray[i].label);
+                            }
+                        }
+                        for (let i = 0; i < priorityArray.length; i++) {
+                            if(priorityArray[i].value === res.data.tasks[j].priority) {
+                                setPriority(priorityArray[i].label);
+                            }
+                        }
+                    }
             });
         }   
     },[2]);
@@ -67,6 +110,13 @@ const Project = (props) =>{
         setValue(!canEdit);
     };
 
+    const removeTask = (e, id) => {
+        e.preventDefault();
+        axios.delete(API_URL_TASK + id, 
+            {headers: authHeader()})
+            .then(res=>setMessage(res.data));          
+    };
+
     return (
         <div>
             <h3>Project</h3>
@@ -108,13 +158,14 @@ const Project = (props) =>{
                     }}
                     variant="filled"/>}
             </div>
+                    <br></br>
             <div>
-                <label>Tasks:</label> 
+            <h5 style={headerStyle}>Tasks:</h5> 
                 <ul>
                     {project && project.tasks.map(item => (
+                        <div>
                         <li>
                             <Button onClick={e=>switchToTask(e, item.id)}>
-                                {/* {item.title} : {item.priority} : {item.status} */}
                                 <TextField id="filled-read-only-input" 
                                     label="title" 
                                     value={item.title}  
@@ -124,14 +175,14 @@ const Project = (props) =>{
                                     variant="filled"/>
                                 <TextField id="filled-read-only-input" 
                                     label="priority" 
-                                    value={item.priority}  
+                                    value={priority}  
                                     InputProps={{
                                         readOnly: true,
                                     }}
                                 variant="filled"/>
                                 <TextField id="filled-read-only-input" 
                                     label="status" 
-                                    value={item.status}  
+                                    value={status}  
                                     InputProps={{
                                         readOnly: true,
                                     }}
@@ -144,10 +195,28 @@ const Project = (props) =>{
                                     }}
                                     variant="filled"/>    
                             </Button>
+                            {project && project.user.username === user.username && <Button onClick={e => removeTask(e, item.id)}>
+                                <img src={trashImg} alt="" 
+                                    style={{width: 40,
+                                    height: 40}}>
+                                </img>
+                            </Button>}
                         </li>
+                       
+                        </div>
+                         
+                        
                     ))}
                 </ul>
-                {project && project.user.username === user.username && <Button onClick={switchToCreateTask}>Add new task</Button>}
+                {project && project.user.username === user.username && <Button variant="outlined" onClick={switchToCreateTask}>Add new task</Button>}
+
+                {message && (
+                <div className="form-group">
+                  <div className="alert alert-success" role="alert">
+                    {message}
+                  </div>
+                </div>
+                )}
             </div>
         </div>
     );
