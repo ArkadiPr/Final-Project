@@ -23,7 +23,6 @@ public class TaskController {
     private UserService userService;
     private TaskMapper createTaskMapper;
 
-
     @GetMapping
     public List<Task> getAllTasks() {
         return taskService.findAll();
@@ -60,7 +59,6 @@ public class TaskController {
         }
         return taskService.saveOrUpdate(task);
     }
-
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {

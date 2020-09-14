@@ -1,10 +1,8 @@
 package com.geekbrains.finalproject.services;
 
 import com.geekbrains.finalproject.entities.Comment;
-import com.geekbrains.finalproject.entities.Project;
 import com.geekbrains.finalproject.exceptions.ResourceNotFoundException;
 import com.geekbrains.finalproject.repositories.CommentRepository;
-import com.geekbrains.finalproject.repositories.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
